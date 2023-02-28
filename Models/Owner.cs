@@ -7,5 +7,6 @@
         public string Surname { get; set; } = string.Empty;
 
         public Country Country { get; set; }
+        public ICollection<CarOwner> CarOwners { get; set; }
     }
 }

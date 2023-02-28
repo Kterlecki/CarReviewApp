@@ -8,5 +8,7 @@
         public int yearBuilt { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
+        public ICollection<CarOwner> CarOwners{ get; set; }
+        public ICollection<CarCategory> CarCategories{ get; set; }
     }
 }
