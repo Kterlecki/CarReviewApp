@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string Make { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
-        public int yearBuilt { get; set; }
+        public int YearBuilt { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
         public ICollection<CarOwner> CarOwners{ get; set; }
