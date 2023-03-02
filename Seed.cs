@@ -8,7 +8,7 @@ namespace CarReviewApp
         private readonly DataContext dataContext;
         public Seed(DataContext context)
         {
-            dataContext = context;
+            this.dataContext = context;
         }
         public void SeedDataContext()
         {
