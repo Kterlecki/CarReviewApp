@@ -14,22 +14,27 @@ namespace CarReviewApp.Repository
 
         public bool CarExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Cars.Any(c => c.Id == id);
         }
 
         public Car GetCar(int id)
         {
-            return _context.Cars.Where(p => p.Id == id).FirstOrDefault();
+            return _context.Cars.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public Car GetCar(string name)
+        public Car GetCar(string make)
         {
-            throw new NotImplementedException();
+            return _context.Cars.Where(c => c.Make == make).FirstOrDefault();
         }
 
         public decimal GetCarRating(int id)
         {
-            throw new NotImplementedException();
+            var review = _context.Reviews.Where(r => r.Car.Id == id);
+            if(review.Count() < 1)
+            {
+                return 0;
+            }
+            return ((decimal)review.Sum(r => r.Rating)) / review.Count();
         }
 
         public ICollection<Car> GetCars()
