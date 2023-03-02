@@ -29,5 +29,23 @@ namespace CarReviewApp.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(Car))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCar(int id)
+        {
+            if(!_carRepository.CarExists(id))
+            {
+                return NotFound();
+            }
+
+            var car = _carRepository.GetCar(id);
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(car);
+        }
     } 
 }
