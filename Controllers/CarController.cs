@@ -47,5 +47,22 @@ namespace CarReviewApp.Controllers
             }
             return Ok(car);
         }
+        [HttpGet("{id}/rating")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCarRating (int id)
+        {
+            if (!_carRepository.CarExists(id))
+            {
+                return NotFound();
+            }
+            var rating = _carRepository.GetCarRating(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(rating);
+            }
+            return Ok(rating);
+        }
+
     } 
 }
