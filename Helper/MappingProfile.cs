@@ -10,6 +10,7 @@ namespace CarReviewApp.Helper
         {
             CreateMap<Car, CarDto>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<Country, CountryDto>();
         }
     }
 }

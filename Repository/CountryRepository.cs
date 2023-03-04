@@ -39,4 +39,6 @@ namespace CarReviewApp.Repository
         public ICollection<Owner> GetOwnersFromACountry(int countryId)
         {
             return _context.Owners.Where(c => c.Country.Id == countryId).ToList();
+        }
     }
+}
