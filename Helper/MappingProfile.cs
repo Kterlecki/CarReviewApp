@@ -9,6 +9,7 @@ namespace CarReviewApp.Helper
         public MappingProfile()
         {
             CreateMap<Car, CarDto>();
+            CreateMap<Category, CategoryDto>();
         }
     }
 }
