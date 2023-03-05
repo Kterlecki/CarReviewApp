@@ -3,7 +3,6 @@ using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace CarReviewApp.Controllers
 {
