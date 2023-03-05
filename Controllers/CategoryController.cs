@@ -25,7 +25,7 @@ namespace CarReviewApp.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
-            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories);
+            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
 
             if (!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace CarReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetCarByCategoryId(int Id)
         {
-            var cars = _mapper.Map<List<CategoryDto>>(
+            var cars = _mapper.Map<List<Car>>(
                 _categoryRepository.GetCarByCategory(Id));
             if(!ModelState.IsValid)
             {
