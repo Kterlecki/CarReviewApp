@@ -35,17 +35,17 @@ namespace CarReviewApp.Controllers
 
         }
 
-        [HttpGet("{categoryId}")]
+        [HttpGet("{Id}")]
         [ProducesResponseType(200, Type = typeof(Category))]
         [ProducesResponseType(400)]
-        public IActionResult GetCategory(int categoryId)
+        public IActionResult GetCategory(int Id)
         {
-            if (!_categoryRepository.CategoryExists(categoryId))
+            if (!_categoryRepository.CategoryExists(Id))
             {
                 return NotFound();
             }
 
-            var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(categoryId));
+            var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(Id));
 
             if (!ModelState.IsValid)
             {
@@ -54,13 +54,13 @@ namespace CarReviewApp.Controllers
             return Ok(category);
         }
 
-        [HttpGet("car/{categoryId}")]
+        [HttpGet("car/{Id}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Car>))]
         [ProducesResponseType(400)]
-        public IActionResult GetCarByCategoryId(int categoryId)
+        public IActionResult GetCarByCategoryId(int Id)
         {
             var cars = _mapper.Map<List<CategoryDto>>(
-                _categoryRepository.GetCarByCategory(categoryId));
+                _categoryRepository.GetCarByCategory(Id));
             if(!ModelState.IsValid)
             {
                 return BadRequest();
