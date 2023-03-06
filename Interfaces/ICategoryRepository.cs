@@ -8,5 +8,7 @@ namespace CarReviewApp.Interfaces
         Category GetCategory(int id);
         ICollection<Car> GetCarByCategory(int id);
         bool CategoryExists(int id);
+        bool CreateCategory(Category category);
+        bool Save();
     }
 }
