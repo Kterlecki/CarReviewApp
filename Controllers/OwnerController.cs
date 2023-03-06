@@ -54,16 +54,17 @@ namespace CarReviewApp.Controllers
         [HttpGet("{id}/car")]
         [ProducesResponseType(200, Type = typeof(Owner))]
         [ProducesResponseType(400)]
-        public IActionResult GetCarByOwner(int ownerId)
+        public IActionResult GetCarByOwner(int id)
         {
-            if(!_ownerRepository.OwnerExists(ownerId))
+            if(!_ownerRepository.OwnerExists(id))
             {
                 return NotFound();
             }
-            
-            var owner = _mapper.Map<List<OwnerDto>>(_ownerRepository.GetCarByOwner(ownerId));
 
-            if(!ModelState.IsValid)
+            var owner = _mapper.Map<List<CarDto>>(
+                _ownerRepository.GetCarByOwner(id));
+
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
