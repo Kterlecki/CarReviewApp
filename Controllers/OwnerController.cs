@@ -11,11 +11,13 @@ namespace CarReviewApp.Controllers
     public class OwnerController : Controller
     {
         private readonly IOwnerRepository _ownerRepository;
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public OwnerController(IOwnerRepository ownerRepository, IMapper mapper)
+        public OwnerController(IOwnerRepository ownerRepository, ICountryRepository countryRepository, IMapper mapper)
         {
             _ownerRepository = ownerRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
         }
 
@@ -69,6 +71,40 @@ namespace CarReviewApp.Controllers
                 return BadRequest();
             }
             return Ok(owner);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOwner([FromQuery] int countryId, [FromBody] OwnerDto ownerCreate)
+        {
+            if (ownerCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var owner = _ownerRepository.GetOwners()
+                .Where(c => c.Surname.Trim().ToUpper() == ownerCreate.Surname.TrimEnd().ToUpper())
+                .FirstOrDefault();
+            if (owner != null)
+            {
+                ModelState.AddModelError("", "Owner already exists");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var ownerMap = _mapper.Map<Owner>(ownerCreate);
+            ownerMap.Country = _countryRepository.GetCountry(countryId);
+
+            if (!_ownerRepository.CreateOwner(ownerMap))
+            {
+                ModelState.AddModelError("", "Save did not complete, Error");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Succesfully created");
         }
 
     }
