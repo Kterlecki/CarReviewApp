@@ -41,5 +41,34 @@ namespace CarReviewApp.Repository
         {
             return _context.Cars.OrderBy(c => c.Id).ToList();
         }
+
+        public bool CreateCar(int ownerId, int categoryId, Car car)
+        {
+            var carOwnerEntity = _context.Owners.Where(a => a.Id == ownerId).FirstOrDefault();
+            var category  = _context.Categories.Where(c =>c.Id == categoryId).FirstOrDefault();
+
+            var carOwner = new CarOwner()
+            {
+                Owner = carOwnerEntity,
+                Car = car
+            };
+
+            var carCategory = new CarCategory()
+            {
+                Category = category,
+                Car = car
+            };
+
+            _context.Add(carOwner);
+            _context.Add(carCategory);
+            _context.Add(car);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }
