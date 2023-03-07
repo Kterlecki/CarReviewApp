@@ -68,5 +68,39 @@ namespace CarReviewApp.Controllers
             return Ok(rating);
         }
 
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCar([FromQuery] int ownerId,[FromQuery] int catId, [FromBody] CarDto carCreate)
+        {
+            if (carCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var car = _carRepository.GetCars()
+                .Where(c => c.Model.Trim().ToUpper() == carCreate.Model.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (car != null)
+            {
+                ModelState.AddModelError("", "Car already exists");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var carMap = _mapper.Map<Car>(carCreate);
+
+            if (!_carRepository.CreateCar(ownerId, catId, carMap))
+            {
+                ModelState.AddModelError("", "Save did not complete, Error");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Succesfully created");
+        }
+
     } 
 }
