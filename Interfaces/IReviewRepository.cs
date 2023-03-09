@@ -9,6 +9,7 @@ namespace CarReviewApp.Interfaces
         ICollection<Review> GetReviewsOfACar(int carId);
         bool ReviewExists(int id);
         public bool CreateReview(Review review);
+        public bool UpdateReview(Review review);
         public bool Save();
     }
 }
