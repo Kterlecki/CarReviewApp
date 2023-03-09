@@ -10,6 +10,7 @@ namespace CarReviewApp.Interfaces
         ICollection<Car> GetCarByOwner(int id);
         bool OwnerExists(int id);
         bool CreateOwner(Owner owner);
+        bool UpdateOwner(Owner owner);
         bool Save();
     }
 }

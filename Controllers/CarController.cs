@@ -11,11 +11,15 @@ namespace CarReviewApp.Controllers
     public class CarController : Controller
     {
         private readonly ICarRepository _carRepository;
+        private readonly IReviewRepository _reviewerRepository;
         private readonly IMapper _mapper;
 
-        public CarController(ICarRepository carRepository, IMapper mapper)
+        public CarController(ICarRepository carRepository, 
+            IReviewRepository reviewerRepository,
+            IMapper mapper)
         {
             _carRepository = carRepository;
+            _reviewerRepository = reviewerRepository;
             _mapper = mapper;
         }
 
@@ -100,6 +104,44 @@ namespace CarReviewApp.Controllers
             }
 
             return Ok("Succesfully created");
+        }
+
+        [HttpPut("{carId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCar(int carId,
+            [FromQuery] int catId,
+            [FromQuery] int ownerId,
+            [FromBody] CarDto updateCar)
+        {
+            if (updateCar == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if (carId != updateCar.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_carRepository.CarExists(carId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var carMap = _mapper.Map<Car>(updateCar);
+            if (!_carRepository.UpdateCar(ownerId, catId, carMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating Car");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
         }
 
     } 
