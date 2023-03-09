@@ -10,6 +10,7 @@ namespace CarReviewApp.Interfaces
         decimal GetCarRating(int id);
         bool CarExists(int id);
         bool CreateCar(int ownerId, int categoryId, Car car);
+        bool UpdateCar(int ownerId, int categoryId, Car car);
         bool Save();
     }
 }
