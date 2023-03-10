@@ -11,6 +11,7 @@ namespace CarReviewApp.Interfaces
         bool CarExists(int id);
         bool CreateCar(int ownerId, int categoryId, Car car);
         bool UpdateCar(int ownerId, int categoryId, Car car);
+        bool DeleteCar(Car car);
         bool Save();
     }
 }
