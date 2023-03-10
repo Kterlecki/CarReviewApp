@@ -76,5 +76,11 @@ namespace CarReviewApp.Repository
             _context.Update(car);
             return Save();
         }
+
+        public bool DeleteCar(Car car)
+        {
+            _context.Remove(car);
+            return Save();
+        }
     }
 }

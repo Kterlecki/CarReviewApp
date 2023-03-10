@@ -144,5 +144,36 @@ namespace CarReviewApp.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{carId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCar(int carId)
+        {
+            if (!_carRepository.CarExists(carId))
+            {
+                return NotFound();
+            }
+
+            var reviewsToDelete = _reviewerRepository.GetReviewsOfACar(carId);
+            var carToDelete = _carRepository.GetCar(carId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!_reviewerRepository.DeleteReviews(reviewsToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Something went wrong with Delete of Reviewer");
+            }
+            if (!_carRepository.DeleteCar(carToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong while deleting Car");
+            }
+
+            return NoContent();
+        }
+
     } 
 }
