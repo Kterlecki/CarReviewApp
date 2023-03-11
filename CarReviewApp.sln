@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarReviewApp", "src/CarReviewApp.csproj", "{52D5780C-83E7-405B-AD17-D98C8967DD75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarReviewApp", "src\CarReviewApp.csproj", "{52D5780C-83E7-405B-AD17-D98C8967DD75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarReviewApp.tests", "test\CarReviewApp.tests.csproj", "{82C1F4F9-A019-409C-A953-F54D470FC3E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +21,10 @@ Global
 		{49B9B31F-DF68-466A-BED3-5FDF334CE3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49B9B31F-DF68-466A-BED3-5FDF334CE3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49B9B31F-DF68-466A-BED3-5FDF334CE3F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C1F4F9-A019-409C-A953-F54D470FC3E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C1F4F9-A019-409C-A953-F54D470FC3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C1F4F9-A019-409C-A953-F54D470FC3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C1F4F9-A019-409C-A953-F54D470FC3E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
