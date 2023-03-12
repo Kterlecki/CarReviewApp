@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\CarControllertests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Controller\CarControllertests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="7.3.1" />
+    <PackageReference Include="FluentAssertions" Version="6.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.14" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Moq" Version="4.18.4" />
