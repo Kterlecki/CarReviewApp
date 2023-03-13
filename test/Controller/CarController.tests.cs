@@ -61,4 +61,68 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
     }
+
+    [Fact]
+    public void CarController_GetCar_ReturnsOk()
+    {
+        //Arrange
+        int id = 1;
+        var car = A.Fake<Car>();
+        A.CallTo(() => _carRepository.CarExists(id)).Returns(true);
+        A.CallTo(() => _mapper.Map<Car>(_carRepository.GetCar(id))).Returns(car);
+        A.CallTo(() => _carRepository.GetCar(id)).Returns(car);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.GetCar(id);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType(typeof(OkObjectResult));
+    }
+    [Fact]
+    public void CarController_GetCar_ReturnsNotFound()
+    {
+        //Arrange
+        int id = 1;
+        A.CallTo(() => _carRepository.CarExists(id)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.GetCar(id);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType(typeof(NotFoundResult));
+    }
+
+    [Fact]
+    public void CarController_GetCarRating_ReturnsOk()
+    {
+        //Arrange
+        int id = 1;
+        A.CallTo(() => _carRepository.CarExists(id)).Returns(true);
+        A.CallTo(() => _carRepository.GetCarRating(id)).Returns(id);
+
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.GetCarRating(id);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType(typeof(OkObjectResult));
+    }
+
+    [Fact]
+    public void CarController_GetCarRating_ReturnsNotFound()
+    {
+        //Arrange
+        int id = 1;
+        A.CallTo(() => _carRepository.CarExists(id)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.GetCarRating(id);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType(typeof(NotFoundResult));
+    }
 }
