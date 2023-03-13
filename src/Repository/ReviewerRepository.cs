@@ -9,12 +9,10 @@ namespace CarReviewApp.Repository
     public class ReviewerRepository : IReviewerRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public ReviewerRepository(DataContext context, IMapper mapper)
+        public ReviewerRepository(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public Reviewer GetReviewer(int id)
