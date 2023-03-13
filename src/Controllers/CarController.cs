@@ -14,7 +14,7 @@ namespace CarReviewApp.Controllers
         private readonly IReviewRepository _reviewerRepository;
         private readonly IMapper _mapper;
 
-        public CarController(ICarRepository carRepository, 
+        public CarController(ICarRepository carRepository,
             IReviewRepository reviewerRepository,
             IMapper mapper)
         {
@@ -34,7 +34,6 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(cars);
-
         }
 
         [HttpGet("{id}")]
@@ -81,9 +80,7 @@ namespace CarReviewApp.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var car = _carRepository.GetCars()
-                .Where(c => c.Model.Trim().ToUpper() == carCreate.Model.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            var car = _carRepository.GetCarTrimToUpper(carCreate);
 
             if (car != null)
             {
@@ -174,6 +171,5 @@ namespace CarReviewApp.Controllers
 
             return NoContent();
         }
-
-    } 
+    }
 }
