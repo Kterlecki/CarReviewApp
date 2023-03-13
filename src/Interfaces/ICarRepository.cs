@@ -1,4 +1,5 @@
-﻿using CarReviewApp.Models;
+﻿using CarReviewApp.Dto;
+using CarReviewApp.Models;
 
 namespace CarReviewApp.Interfaces
 {
@@ -12,6 +13,7 @@ namespace CarReviewApp.Interfaces
         bool CreateCar(int ownerId, int categoryId, Car car);
         bool UpdateCar(int ownerId, int categoryId, Car car);
         bool DeleteCar(Car car);
+        Car GetCarTrimToUpper(CarDto carCreate);
         bool Save();
     }
 }

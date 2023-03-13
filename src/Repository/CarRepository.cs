@@ -1,4 +1,5 @@
 ﻿using CarReviewApp.Data;
+using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 
@@ -81,6 +82,12 @@ namespace CarReviewApp.Repository
         {
             _context.Remove(car);
             return Save();
+        }
+
+        public Car GetCarTrimToUpper(CarDto carCreate)
+        {
+            return GetCars().Where(c => c.Model.Trim().ToUpper() == carCreate.Model.TrimEnd().ToUpper())
+                .FirstOrDefault();
         }
     }
 }
