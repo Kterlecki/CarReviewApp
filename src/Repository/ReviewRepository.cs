@@ -8,12 +8,10 @@ namespace CarReviewApp.Repository
     public class ReviewRepository : IReviewRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public ReviewRepository(DataContext dataContext, IMapper mapper)
+        public ReviewRepository(DataContext dataContext)
         {
             _context = dataContext;
-            _mapper = mapper;
         }
         public ICollection<Review> GetReviews()
         {
