@@ -106,8 +106,9 @@ public class CarControllerTests
         //Arrange
         int ownerId = 1;
         int catId = 2;
-        Car car = null;
+        var car = A.Fake<Car>();
         var carCreate = A.Fake<CarDto>();
+        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(car);
         var controller = new CarController(_carRepository, _reviewRepository, _mapper);
 
         //Act
