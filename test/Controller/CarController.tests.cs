@@ -68,7 +68,7 @@ public class CarControllerTests
         var carCreate = A.Fake<CarDto>();
         var cars = A.Fake<ICollection<CarDto>>();
         var carList = A.Fake<IList<CarDto>>();
-        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(car);
+        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(null);
         A.CallTo(() => _mapper.Map<Car>(carCreate)).Returns(car);
         A.CallTo(() => _carRepository.CreateCar(ownerId, catId, car)).Returns(true);
         var controller = new CarController(_carRepository, _reviewRepository, _mapper);
@@ -77,25 +77,66 @@ public class CarControllerTests
         var result = controller.CreateCar(ownerId, catId, carCreate);
         //Assert
         result.Should().NotBeNull();
+        result.Should().BeOfType<OkObjectResult>();
     }
 
     [Fact]
     public void CarController_CreateCar_ReturnsModelStateError()
     {
         //Arrange
+        int ownerId = 1;
+        int catId = 2;
+        var car = A.Fake<Car>();
+        var carCreate = A.Fake<CarDto>();
+        var cars = A.Fake<ICollection<CarDto>>();
+        var carList = A.Fake<IList<CarDto>>();
+        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(null);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        controller.ModelState.AddModelError("List", "List is Error");
+        //Act
+        var result = controller.CreateCar(ownerId, catId, carCreate);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public void CarController_CreateCarWithNullCar_ReturnsModelStateError()
+    {
+        //Arrange
+        int ownerId = 1;
+        int catId = 2;
+        var car = A.Fake<Car>();
+        var carCreate = A.Fake<CarDto>();
+        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(car);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.CreateCar(ownerId, catId, carCreate);
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        // result.Should().BeOfType<StatusCodeResult>().Which.StatusCode.Should().Be(422);
+    }
+
+    [Fact]
+    public void CarController_CreateCarWithCarExisting_ReturnsModelStateError()
+    {
+        //Arrange
+        int ownerId = 1;
+        int catId = 2;
         var car = A.Fake<Car>();
         var carCreate = A.Fake<CarDto>();
         var cars = A.Fake<ICollection<CarDto>>();
         var carList = A.Fake<IList<CarDto>>();
         A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(car);
         var controller = new CarController(_carRepository, _reviewRepository, _mapper);
-        controller.ModelState.AddModelError("List", "List is Error");
         //Act
-        var result = controller.GetCars();
+        var result = controller.CreateCar(ownerId, catId, carCreate);
         //Assert
         result.Should().NotBeNull();
-        result.Should().BeOfType<BadRequestObjectResult>();
-
+        result.Should().BeOfType<ObjectResult>();
     }
 
     [Fact]
@@ -189,6 +230,79 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(BadRequestObjectResult));
+        // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
+    }
+
+    [Fact]
+    public void CarController_UpdateCar_ReturnsNoContent()
+    {
+        //Arrange
+        var carId = 1;
+        var catId = 1;
+        var ownerId = 1;
+        var updateCar = A.Fake<CarDto>();
+        var carMap = A.Fake<Car>();
+        updateCar.Id = 1;
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(true);
+        A.CallTo(() => _mapper.Map<Car>(updateCar)).Returns(carMap);
+        A.CallTo(() => _carRepository.UpdateCar(ownerId, catId, carMap)).Returns(true);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+        // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
+    }
+    [Fact]
+    public void CarController_UpdateCarValueNull_ReturnsBadRequest()
+    {
+        //Arrange
+        var carId = 1;
+        var catId = 1;
+        var ownerId = 1;
+        CarDto updateCar = null;
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+        // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
+    }
+    [Fact]
+    public void CarController_UpdateCarCarIdNotMatching_ReturnsBadRequest()
+    {
+        //Arrange
+        var carId = 1;
+        var catId = 1;
+        var ownerId = 1;
+        var updateCar = A.Fake<CarDto>();
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+        // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
+    }
+
+    [Fact]
+    public void CarController_UpdateCarCarExist_ReturnsNotFound()
+    {
+        //Arrange
+        var carId = 1;
+        var catId = 1;
+        var ownerId = 1;
+        var updateCar = A.Fake<CarDto>();
+        updateCar.Id = 1;
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NotFoundResult>();
         // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
     }
 }
