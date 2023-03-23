@@ -99,6 +99,7 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
     }
 
     [Fact]
@@ -138,7 +139,7 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<ObjectResult>();
-        // result.Should().BeOfType<StatusCodeResult>().Which.StatusCode.Should().Be(422);
+        result.As<ObjectResult>().StatusCode.Should().Be(422);
     }
      [Fact]
     public void CarController_CreateCarWithNullCarCreate_ReturnsModelStateError()
