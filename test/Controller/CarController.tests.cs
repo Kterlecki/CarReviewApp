@@ -79,6 +79,28 @@ public class CarControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<OkObjectResult>();
     }
+    [Fact]
+    public void CarController_CreateCarWithFalse_ReturnsObjectResult()
+    {
+        //Arrange
+        int ownerId = 1;
+        int catId = 2;
+        var car = A.Fake<Car>();
+        var carCreate = A.Fake<CarDto>();
+        var cars = A.Fake<ICollection<CarDto>>();
+        var carList = A.Fake<IList<CarDto>>();
+        A.CallTo(() => _carRepository.GetCarTrimToUpper(carCreate)).Returns(null);
+        A.CallTo(() => _mapper.Map<Car>(carCreate)).Returns(car);
+        A.CallTo(() => _carRepository.CreateCar(ownerId, catId, car)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.CreateCar(ownerId, catId, carCreate);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
+    }
 
     [Fact]
     public void CarController_CreateCar_ReturnsModelStateError()
@@ -117,7 +139,25 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<ObjectResult>();
-        // result.Should().BeOfType<StatusCodeResult>().Which.StatusCode.Should().Be(422);
+        result.As<ObjectResult>().StatusCode.Should().Be(422);
+    }
+     [Fact]
+    public void CarController_CreateCarWithNullCarCreate_ReturnsModelStateError()
+    {
+        //Arrange
+        int ownerId = 1;
+        int catId = 1;
+        var car = A.Fake<Car>();
+        var carCreate = A.Fake<CarDto>();
+        carCreate = null;
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.CreateCar(ownerId, catId, carCreate);
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
     }
 
     [Fact]
@@ -252,7 +292,6 @@ public class CarControllerTests
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();
-        // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
     }
     [Fact]
     public void CarController_UpdateCarValueNull_ReturnsBadRequest()
@@ -305,4 +344,25 @@ public class CarControllerTests
         result.Should().BeOfType<NotFoundResult>();
         // result.Should().BeOfType<BadRequestObjectResult>(); ---- can be written like this
     }
+
+    [Fact]
+    public void CarController_UpdateCarModeStateInvalid_ReturnsBadRequest()
+    {
+        //Arrange
+        var carId = 1;
+        var catId = 1;
+        var ownerId = 1;
+        var updateCar = A.Fake<CarDto>();
+        var carMap = A.Fake<Car>();
+        updateCar.Id = 1;
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(true);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        controller.ModelState.AddModelError("", "Error");
+        //Act
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+
 }
