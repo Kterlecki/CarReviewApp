@@ -407,4 +407,38 @@ public class CarControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();
     }
+    [Fact]
+    public void CarController_DeleteCarCarExistsSetToFalse_ReturnsNotFound()
+    {
+        //Arrange
+        var carId = 1;
+
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.DeleteCar(carId);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NotFoundResult>();
+    }
+
+    [Fact]
+    public void CarController_DeleteCarModelStateInvalid_ReturnsBadRequest()
+    {
+        //Arrange
+        var carId = 1;
+        var review = A.Fake<ICollection<Review>>();
+        var car = A.Fake<Car>();
+
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReviewsOfACar(carId)).Returns(review);
+        A.CallTo(() => _carRepository.GetCar(carId)).Returns(car);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        controller.ModelState.AddModelError("","error");
+        //Act
+        var result = controller.DeleteCar(carId);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
 }
