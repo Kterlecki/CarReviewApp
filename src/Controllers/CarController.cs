@@ -11,7 +11,7 @@ namespace CarReviewApp.Controllers
     public class CarController : Controller
     {
         private readonly ICarRepository _carRepository;
-        private readonly IReviewRepository _reviewerRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
         public CarController(ICarRepository carRepository,
@@ -19,7 +19,7 @@ namespace CarReviewApp.Controllers
             IMapper mapper)
         {
             _carRepository = carRepository;
-            _reviewerRepository = reviewerRepository;
+            _reviewRepository = reviewerRepository;
             _mapper = mapper;
         }
 
@@ -152,7 +152,7 @@ namespace CarReviewApp.Controllers
                 return NotFound();
             }
 
-            var reviewsToDelete = _reviewerRepository.GetReviewsOfACar(carId);
+            var reviewsToDelete = _reviewRepository.GetReviewsOfACar(carId);
             var carToDelete = _carRepository.GetCar(carId);
 
             if (!ModelState.IsValid)
@@ -160,7 +160,7 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(!_reviewerRepository.DeleteReviews(reviewsToDelete.ToList()))
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete.ToList()))
             {
                 ModelState.AddModelError("", "Something went wrong with Delete of Reviewer");
             }
