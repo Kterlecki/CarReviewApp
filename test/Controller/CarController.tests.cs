@@ -16,6 +16,7 @@ public class CarControllerTests
 {
     private readonly ICarRepository _carRepository;
     private readonly IReviewRepository _reviewRepository;
+
     private readonly IMapper _mapper;
     public CarControllerTests()
     {
@@ -364,5 +365,46 @@ public class CarControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestResult>();
     }
+    [Fact]
+    public void CarController_DeleteCar_ReturnsNoContent()
+    {
+        //Arrange
+        var carId = 1;
+        var review = A.Fake<ICollection<Review>>();
+        var car = A.Fake<Car>();
 
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReviewsOfACar(carId)).Returns(review);
+        A.CallTo(() => _carRepository.GetCar(carId)).Returns(car);
+        A.CallTo(() => _reviewRepository.DeleteReviews(review.ToList())).Returns(true);
+        A.CallTo(() => _carRepository.DeleteCar(car)).Returns(true);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+
+        //Act
+        var result = controller.DeleteCar(carId);
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void CarController_DeleteCarDeleteSetToFalse_ReturnsModelError()
+    {
+        //Arrange
+        var carId = 1;
+        var review = A.Fake<ICollection<Review>>();
+        var car = A.Fake<Car>();
+
+        A.CallTo(() => _carRepository.CarExists(carId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReviewsOfACar(carId)).Returns(review);
+        A.CallTo(() => _carRepository.GetCar(carId)).Returns(car);
+        A.CallTo(() => _reviewRepository.DeleteReviews(review.ToList())).Returns(true);
+        A.CallTo(() => _carRepository.DeleteCar(car)).Returns(false);
+        var controller = new CarController(_carRepository, _reviewRepository, _mapper);
+        //Act
+        var result = controller.DeleteCar(carId);
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
 }
