@@ -6,7 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public string Surname { get; set; } = string.Empty;
 
-        public Country Country { get; set; }
-        public ICollection<CarOwner> CarOwners { get; set; }
+        public Country? Country { get; set; }
+        public ICollection<CarOwner>? CarOwners { get; set; }
     }
 }
