@@ -169,7 +169,6 @@ public class CountryControllerTests
     {
         // Arrange
         var countryCreate = A.Fake<CountryDto>();
-        var countryId = 1;
         var country = A.Fake<Country>();
         A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(country);
         var controller = new CountryController(_countryRepository, _mapper);
@@ -204,7 +203,7 @@ public class CountryControllerTests
         countryCreate = null;
         var controller = new CountryController(_countryRepository, _mapper);
         // Act
-        var result = controller.CreateCountry(countryCreate);
+        var result = controller.CreateCountry(countryCreate!);
         // Arrange
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
@@ -309,7 +308,7 @@ public class CountryControllerTests
         var controller = new CountryController(_countryRepository, _mapper);
 
         // Act
-        var result = controller.UpdateCountry(countryId, updateCountry);
+        var result = controller.UpdateCountry(countryId, updateCountry!);
         // Arrange
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
