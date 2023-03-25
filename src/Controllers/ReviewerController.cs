@@ -65,7 +65,6 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(reviews);
-
         }
 
         [HttpPost]

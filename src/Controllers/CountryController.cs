@@ -30,7 +30,6 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(country);
-
         }
 
         [HttpGet("{id}")]
@@ -160,6 +159,5 @@ namespace CarReviewApp.Controllers
 
             return NoContent();
         }
-
     }
 }

@@ -142,7 +142,6 @@ namespace CarReviewApp.Controllers
             return NoContent();
         }
 
-
         [HttpDelete("{ownerId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -168,6 +167,5 @@ namespace CarReviewApp.Controllers
 
             return NoContent();
         }
-
     }
 }
