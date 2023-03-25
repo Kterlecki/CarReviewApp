@@ -30,7 +30,6 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(country);
-
         }
 
         [HttpGet("{id}")]
@@ -76,9 +75,7 @@ namespace CarReviewApp.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var country = _countryRepository.GetCountries()
-                .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            var country = _countryRepository.CountryGetTrimToUpper(countryCreate);
             if (country != null)
             {
                 ModelState.AddModelError("", "Country already exists");
@@ -160,6 +157,5 @@ namespace CarReviewApp.Controllers
 
             return NoContent();
         }
-
     }
 }

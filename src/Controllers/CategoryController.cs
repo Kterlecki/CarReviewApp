@@ -19,7 +19,6 @@ namespace CarReviewApp.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
@@ -31,7 +30,6 @@ namespace CarReviewApp.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(categories);
-
         }
 
         [HttpGet("{Id}")]
@@ -66,7 +64,6 @@ namespace CarReviewApp.Controllers
             }
             return Ok(cars);
         }
-
 
         [HttpPost]
         [ProducesResponseType(204)]
@@ -136,7 +133,6 @@ namespace CarReviewApp.Controllers
             return NoContent();
         }
 
-
         [HttpDelete("{categoryId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -149,7 +145,7 @@ namespace CarReviewApp.Controllers
             }
 
             var categoryToDelete = _categoryRepository.GetCategory(categoryId);
-            
+
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -162,6 +158,5 @@ namespace CarReviewApp.Controllers
 
             return NoContent();
         }
-
     }
 }

@@ -15,9 +15,9 @@ namespace CarReviewApp.Controllers
         private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public ReviewController(IReviewerRepository reviewerRepository, 
-            ICarRepository carRepository, 
-            IReviewRepository reviewRepository, 
+        public ReviewController(IReviewerRepository reviewerRepository,
+            ICarRepository carRepository,
+            IReviewRepository reviewRepository,
             IMapper mapper)
         {
             _reviewerRepository = reviewerRepository;
@@ -25,7 +25,6 @@ namespace CarReviewApp.Controllers
             _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
-
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Review>))]
@@ -73,7 +72,6 @@ namespace CarReviewApp.Controllers
             }
             return Ok(reviews);
         }
-
 
         [HttpPost]
         [ProducesResponseType(204)]

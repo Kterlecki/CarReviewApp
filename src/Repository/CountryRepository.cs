@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarReviewApp.Data;
+using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 
@@ -60,6 +61,13 @@ namespace CarReviewApp.Repository
         {
             _context.Remove(country);
             return Save();
+        }
+
+        public Country CountryGetTrimToUpper(CountryDto countryCreate)
+        {
+            return GetCountries()
+                .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
         }
     }
 }

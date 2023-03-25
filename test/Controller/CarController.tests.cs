@@ -154,7 +154,7 @@ public class CarControllerTests
         var controller = new CarController(_carRepository, _reviewRepository, _mapper);
 
         //Act
-        var result = controller.CreateCar(ownerId, catId, carCreate);
+        var result = controller.CreateCar(ownerId, catId, carCreate!);
 
         //Assert
         result.Should().NotBeNull();
@@ -301,10 +301,10 @@ public class CarControllerTests
         var carId = 1;
         var catId = 1;
         var ownerId = 1;
-        CarDto updateCar = null;
+        CarDto? updateCar = null;
         var controller = new CarController(_carRepository, _reviewRepository, _mapper);
         //Act
-        var result = controller.UpdateCar(carId, catId, ownerId, updateCar);
+        var result = controller.UpdateCar(carId, catId, ownerId, updateCar!);
         //Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
