@@ -1,4 +1,5 @@
-﻿using CarReviewApp.Models;
+﻿using CarReviewApp.Dto;
+using CarReviewApp.Models;
 
 namespace CarReviewApp.Interfaces
 {
@@ -12,6 +13,7 @@ namespace CarReviewApp.Interfaces
         public bool UpdateReview(Review review);
         public bool DeleteReview(Review review);
         public bool DeleteReviews(List<Review> reviews);
+        Review GetCarTrimToUpper(ReviewDto reviewCreate);
         public bool Save();
     }
 }

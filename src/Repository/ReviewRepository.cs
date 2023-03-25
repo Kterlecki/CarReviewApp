@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarReviewApp.Data;
+using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 
@@ -61,6 +62,13 @@ namespace CarReviewApp.Repository
         {
             _context.RemoveRange(reviews);
             return Save();
+        }
+
+        public Review GetCarTrimToUpper(ReviewDto reviewCreate)
+        {
+            return GetReviews()
+                .Where(c => c.Title.Trim().ToUpper() == reviewCreate.Title.TrimEnd().ToUpper())
+                .FirstOrDefault();
         }
     }
 }
