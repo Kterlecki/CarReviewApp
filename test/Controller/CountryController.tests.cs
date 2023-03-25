@@ -209,4 +209,179 @@ public class CountryControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
     }
+    [Fact]
+    public void CountryController_UpdateCountry_ReturnsOk()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        updateCountry.Id = 1;
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        A.CallTo(() => _mapper.Map<Country>(updateCountry)).Returns(country);
+        A.CallTo(() => _countryRepository.UpdateCountry(country)).Returns(true);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void CountryController_UpdateCountryAddModelError_ReturnsObjectResultWithStatusCode500()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        updateCountry.Id = 1;
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        A.CallTo(() => _mapper.Map<Country>(updateCountry)).Returns(country);
+        A.CallTo(() => _countryRepository.UpdateCountry(country)).Returns(false);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
+    }
+    [Fact]
+    public void CountryController_UpdateCountryModelStateIsInvalid_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        updateCountry.Id = 1;
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        var controller = new CountryController(_countryRepository, _mapper);
+        controller.ModelState.AddModelError("", "error");
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+    [Fact]
+    public void CountryController_UpdateCountryCountryExists_ReturnsNotFound()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        updateCountry.Id = 1;
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(false);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NotFoundResult>();
+    }
+    [Fact]
+    public void CountryController_UpdateCountryCountryIdNotMatching_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        updateCountry.Id = 2;
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void CountryController_UpdateCountryUpdateCountrySetToNull_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryId = 1;
+        var updateCountry = A.Fake<CountryDto>();
+        updateCountry = null;
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.UpdateCountry(countryId, updateCountry);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void CountryController_DeleteCountry_ReturnsNoContent()
+    {
+        // Arrange
+        var countryId = 1;
+        var country = A.Fake<Country>();
+
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        A.CallTo(() => _countryRepository.GetCountry(countryId)).Returns(country);
+        A.CallTo(() => _countryRepository.DeleteCountry(country)).Returns(true);
+
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.DeleteCategory(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void CountryController_DeleteCountryCountryDeleteSetToFalse_ReturnsNoContent()
+    {
+        // Arrange
+        var countryId = 1;
+        var country = A.Fake<Country>();
+
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        A.CallTo(() => _countryRepository.GetCountry(countryId)).Returns(country);
+        A.CallTo(() => _countryRepository.DeleteCountry(country)).Returns(false);
+
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.DeleteCategory(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void CountryController_DeleteCountryModelStateIsInvalid_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryId = 1;
+        var country = A.Fake<Country>();
+
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
+        A.CallTo(() => _countryRepository.GetCountry(countryId)).Returns(country);
+        var controller = new CountryController(_countryRepository, _mapper);
+        controller.ModelState.AddModelError("", "error");
+        // Act
+        var result = controller.DeleteCategory(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void CountryController_DeleteCountryCountryExistsSetToFalse_ReturnsNotFound()
+    {
+        // Arrange
+        var countryId = 1;
+        var country = A.Fake<Country>();
+
+        A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(false);
+        var controller = new CountryController(_countryRepository, _mapper);
+        // Act
+        var result = controller.DeleteCategory(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NotFoundResult>();
+    }
 }
