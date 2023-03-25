@@ -7,8 +7,8 @@
         public string Model { get; set; } = string.Empty;
         public int YearBuilt { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<CarOwner> CarOwners{ get; set; }
-        public ICollection<CarCategory> CarCategories{ get; set; }
+        public ICollection<Review>? Reviews { get; set; }
+        public ICollection<CarOwner>? CarOwners{ get; set; }
+        public ICollection<CarCategory>? CarCategories{ get; set; }
     }
 }

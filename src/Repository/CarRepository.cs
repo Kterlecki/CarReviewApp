@@ -20,12 +20,12 @@ namespace CarReviewApp.Repository
 
         public Car GetCar(int id)
         {
-            return _context.Cars.Where(c => c.Id == id).FirstOrDefault();
+            return _context.Cars.Where(c => c.Id == id).FirstOrDefault()!;
         }
 
         public Car GetCar(string make)
         {
-            return _context.Cars.Where(c => c.Make == make).FirstOrDefault();
+            return _context.Cars.Where(c => c.Make == make).FirstOrDefault()!;
         }
 
         public decimal GetCarRating(int id)

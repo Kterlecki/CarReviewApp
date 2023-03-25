@@ -82,9 +82,7 @@ namespace CarReviewApp.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var review = _reviewRepository.GetReviews()
-                .Where(c => c.Title.Trim().ToUpper() == reviewCreate.Title.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            var review = _reviewRepository.GetCarTrimToUpper(reviewCreate);
 
             if (review != null)
             {
