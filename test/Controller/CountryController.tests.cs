@@ -85,7 +85,7 @@ public class CountryControllerTests
     public void CountryController_GetCountryWithIdModelError_ReturnsBadRequest()
     {
         // Arrange
-         var country = A.Fake<CountryDto>();
+        var country = A.Fake<CountryDto>();
         var countryId = 1;
         A.CallTo(() => _countryRepository.CountryExists(countryId)).Returns(true);
         A.CallTo(() => _mapper.Map<CountryDto>(_countryRepository.GetCountry(countryId))).Returns(country);
@@ -102,7 +102,7 @@ public class CountryControllerTests
     public void CountryController_GetCountryOfAnOwner_ReturnsOk()
     {
         // Arrange
-         var country = A.Fake<CountryDto>();
+        var country = A.Fake<CountryDto>();
         var countryId = 1;
         A.CallTo(() => _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(countryId))).Returns(country);
         var controller = new CountryController(_countryRepository, _mapper);
@@ -117,7 +117,7 @@ public class CountryControllerTests
     public void CountryController_GetCountryOfAnOwnerModelState_ReturnsBadRequest()
     {
         // Arrange
-         var country = A.Fake<CountryDto>();
+        var country = A.Fake<CountryDto>();
         var countryId = 1;
         A.CallTo(() => _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(countryId))).Returns(country);
         var controller = new CountryController(_countryRepository, _mapper);
@@ -134,7 +134,6 @@ public class CountryControllerTests
     {
         // Arrange
         var countryCreate = A.Fake<CountryDto>();
-        var countryId = 1;
         var country = A.Fake<Country>();
         A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(null);
         A.CallTo(() => _mapper.Map<Country>(countryCreate)).Returns(country);
@@ -147,5 +146,67 @@ public class CountryControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<OkObjectResult>();
     }
+    [Fact]
+    public void CountryController_CreateCountryAddModelError_ReturnsObjectResultWithCode500()
+    {
+        // Arrange
+        var countryCreate = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(null);
+        A.CallTo(() => _mapper.Map<Country>(countryCreate)).Returns(country);
+        A.CallTo(() => _countryRepository.CreateCountry(country)).Returns(false);
+        var controller = new CountryController(_countryRepository, _mapper);
 
+        // Act
+        var result = controller.CreateCountry(countryCreate);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
+    }
+    [Fact]
+    public void CountryController_CreateCountryAddModelError_ReturnsObjectResultWithCode422()
+    {
+        // Arrange
+        var countryCreate = A.Fake<CountryDto>();
+        var countryId = 1;
+        var country = A.Fake<Country>();
+        A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(country);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.CreateCountry(countryCreate);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(422);
+    }
+    [Fact]
+    public void CountryController_CreateCountryModelStateIsInvalid_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryCreate = A.Fake<CountryDto>();
+        var country = A.Fake<Country>();
+        A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(null);
+        var controller = new CountryController(_countryRepository, _mapper);
+        controller.ModelState.AddModelError("", "error");
+        // Act
+        var result = controller.CreateCountry(countryCreate);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void CountryController_CreateCountryCountryCreateIsNull_ReturnsBadRequest()
+    {
+        // Arrange
+        var countryCreate = A.Fake<CountryDto>();
+        countryCreate = null;
+        var controller = new CountryController(_countryRepository, _mapper);
+        // Act
+        var result = controller.CreateCountry(countryCreate);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
 }
