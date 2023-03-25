@@ -1,4 +1,5 @@
-﻿using CarReviewApp.Models;
+﻿using CarReviewApp.Dto;
+using CarReviewApp.Models;
 
 namespace CarReviewApp.Interfaces
 {
@@ -12,6 +13,7 @@ namespace CarReviewApp.Interfaces
         bool CreateCountry(Country country);
         bool UpdateCountry(Country country);
         bool DeleteCountry(Country country);
+        Country CountryGetTrimToUpper(CountryDto countryCreate);
         bool Save();
     }
 }

@@ -98,4 +98,54 @@ public class CountryControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
     }
+    [Fact]
+    public void CountryController_GetCountryOfAnOwner_ReturnsOk()
+    {
+        // Arrange
+         var country = A.Fake<CountryDto>();
+        var countryId = 1;
+        A.CallTo(() => _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(countryId))).Returns(country);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.GetCountryOfAnOwner(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<OkObjectResult>();
+    }
+    [Fact]
+    public void CountryController_GetCountryOfAnOwnerModelState_ReturnsBadRequest()
+    {
+        // Arrange
+         var country = A.Fake<CountryDto>();
+        var countryId = 1;
+        A.CallTo(() => _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(countryId))).Returns(country);
+        var controller = new CountryController(_countryRepository, _mapper);
+        controller.ModelState.AddModelError("","error");
+
+        // Act
+        var result = controller.GetCountryOfAnOwner(countryId);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+    [Fact]
+    public void CountryController_CreateCountry_ReturnsOk()
+    {
+        // Arrange
+        var countryCreate = A.Fake<CountryDto>();
+        var countryId = 1;
+        var country = A.Fake<Country>();
+        A.CallTo(() => _countryRepository.CountryGetTrimToUpper(countryCreate)).Returns(null);
+        A.CallTo(() => _mapper.Map<Country>(countryCreate)).Returns(country);
+        A.CallTo(() => _countryRepository.CreateCountry(country)).Returns(true);
+        var controller = new CountryController(_countryRepository, _mapper);
+
+        // Act
+        var result = controller.CreateCountry(countryCreate);
+        // Arrange
+        result.Should().NotBeNull();
+        result.Should().BeOfType<OkObjectResult>();
+    }
+
 }
