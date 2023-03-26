@@ -139,4 +139,107 @@ public class ReviewControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<OkObjectResult>();
     }
+    [Fact]
+    public void ReviewController_CreateReviewValidationOfCreateReviewSetToFalse_ReturnStatusCode500()
+    {
+        var reviewId = 1;
+        var reviewerId = 1;
+        var carId = 1;
+        var reviewList = A.Fake<List<ReviewDto>>();
+        var review = A.Fake<Review>();
+        var reviewCreate = A.Fake<ReviewDto>();
+        var reviewer = A.Fake<Reviewer>();
+        var car = A.Fake<Car>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.GetCarTrimToUpper(reviewCreate)).Returns(null);
+        A.CallTo(() => _mapper.Map<Review>(reviewCreate)).Returns(review);
+        A.CallTo(() => _carRepository.GetCar(carId)).Returns(car);
+        A.CallTo(() => _reviewerRepository.GetReviewer(reviewerId)).Returns(reviewer);
+        A.CallTo(() => _reviewRepository.CreateReview(review)).Returns(false);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.CreateReview(reviewId, carId, reviewCreate);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
+    }
+    [Fact]
+    public void ReviewController_CreateReviewModelStateIsInvalid_ReturnBadRequest()
+    {
+        var reviewId = 1;
+        var reviewerId = 1;
+        var carId = 1;
+        var reviewList = A.Fake<List<ReviewDto>>();
+        var review = A.Fake<Review>();
+        var reviewCreate = A.Fake<ReviewDto>();
+        var reviewer = A.Fake<Reviewer>();
+        var car = A.Fake<Car>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.GetCarTrimToUpper(reviewCreate)).Returns(null);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        controller.ModelState.AddModelError("", "Error");
+        // Act
+        var result = controller.CreateReview(reviewId, carId, reviewCreate);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void ReviewController_CreateReviewValidationReviewSetToNotNull_ReturnStatusCode422()
+    {
+        var reviewId = 1;
+        var carId = 1;
+        var reviewList = A.Fake<List<ReviewDto>>();
+        var review = A.Fake<Review>();
+        var reviewCreate = A.Fake<ReviewDto>();
+        var reviewer = A.Fake<Reviewer>();
+        var car = A.Fake<Car>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.GetCarTrimToUpper(reviewCreate)).Returns(review);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.CreateReview(reviewId, carId, reviewCreate);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ObjectResult>();
+        result.As<ObjectResult>().StatusCode.Should().Be(422);
+    }
+    [Fact]
+    public void ReviewController_CreateReviewValidationReviewCreateSetToNull_ReturnBadRequest()
+    {
+        var reviewId = 1;
+        var carId = 1;
+        ReviewDto? reviewCreate = null;
+        // Arrange
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.CreateReview(reviewId, carId, reviewCreate!);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+
+    [Fact]
+    public void ReviewController_UpdateReview_ReturnsOk()
+    {
+        var reviewId = 1;
+        var reviewList = A.Fake<List<ReviewDto>>();
+        var review = A.Fake<Review>();
+        var updateReview = A.Fake<ReviewDto>();
+        var reviewer = A.Fake<Reviewer>();
+        var car = A.Fake<Car>();
+        updateReview.Id = 1;
+        // Arrange
+        A.CallTo(() => _mapper.Map<Review>(updateReview)).Returns(review);
+        A.CallTo(() => _reviewRepository.ReviewExists(reviewId)).Returns(true);
+        A.CallTo(() => _reviewRepository.UpdateReview(review)).Returns(true);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.UpdateReview(reviewId, updateReview);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
 }
