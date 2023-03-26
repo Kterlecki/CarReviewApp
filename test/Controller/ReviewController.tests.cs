@@ -329,4 +329,66 @@ public class ReviewControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<BadRequestObjectResult>();
     }
+    [Fact]
+    public void ReviewController_DeleteReview_ReturnsNoContent()
+    {
+        var reviewId = 1;
+        var review = A.Fake<Review>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.ReviewExists(reviewId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReview(reviewId)).Returns(review);
+        A.CallTo(() => _reviewRepository.DeleteReview(review)).Returns(true);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.DeleteReview(reviewId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void ReviewController_DeleteReviewValidationDeleteReviewSetToFalse_ReturnsNoContent()
+    {
+        var reviewId = 1;
+        var review = A.Fake<Review>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.ReviewExists(reviewId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReview(reviewId)).Returns(review);
+        A.CallTo(() => _reviewRepository.DeleteReview(review)).Returns(false);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.DeleteReview(reviewId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+    [Fact]
+    public void ReviewController_DeleteReviewValidationModelStateIsInvalid_ReturnsBadRequest()
+    {
+        var reviewId = 1;
+        var review = A.Fake<Review>();
+        // Arrange
+        A.CallTo(() => _reviewRepository.ReviewExists(reviewId)).Returns(true);
+        A.CallTo(() => _reviewRepository.GetReview(reviewId)).Returns(review);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        controller.ModelState.AddModelError("", "error");
+        // Act
+        var result = controller.DeleteReview(reviewId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestObjectResult>();
+    }
+    [Fact]
+    public void ReviewController_DeleteReviewValidationReviewExistsSetToFalse_ReturnsNotFound()
+    {
+        var reviewId = 1;
+        // Arrange
+        A.CallTo(() => _reviewRepository.ReviewExists(reviewId)).Returns(false);
+        var controller = new ReviewController(_reviewerRepository,_carRepository, _reviewRepository, _mapper);
+        // Act
+        var result = controller.DeleteReview(reviewId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NotFoundResult>();
+    }
+
 }
