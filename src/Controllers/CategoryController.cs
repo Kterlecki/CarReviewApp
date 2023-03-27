@@ -74,9 +74,7 @@ namespace CarReviewApp.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var category = _categoryRepository.GetCategories()
-                .Where(c => c.Name.Trim().ToUpper() == categoryCreate.Name.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            var category = _categoryRepository.GetCategoryTrimToUpper(categoryCreate);
             if (category != null)
             {
                 ModelState.AddModelError("", "Category already exists");

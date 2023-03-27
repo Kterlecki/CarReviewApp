@@ -1,4 +1,5 @@
 ﻿using CarReviewApp.Data;
+using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 
@@ -55,6 +56,13 @@ namespace CarReviewApp.Repository
         {
             _context.Remove(category);
             return Save();
+        }
+
+        public Category GetCategoryTrimToUpper(CategoryDto categoryCreate)
+        {
+            return GetCategories()
+                .Where(c => c.Name.Trim().ToUpper() == categoryCreate.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
         }
     }
 }
