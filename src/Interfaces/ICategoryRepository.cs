@@ -12,7 +12,7 @@ namespace CarReviewApp.Interfaces
         bool CreateCategory(Category category);
         bool UpdateCategory(Category category);
         bool DeleteCategory(Category category);
-        Category GetCategoryTrimToUpper(CategoryDto categoryDto);
+        Category GetCategoryTrimToUpper(CategoryDto categoryCreate);
         bool Save();
     }
 }
