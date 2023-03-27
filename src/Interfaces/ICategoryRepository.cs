@@ -1,4 +1,5 @@
-﻿using CarReviewApp.Models;
+﻿using CarReviewApp.Dto;
+using CarReviewApp.Models;
 
 namespace CarReviewApp.Interfaces
 {
@@ -11,6 +12,7 @@ namespace CarReviewApp.Interfaces
         bool CreateCategory(Category category);
         bool UpdateCategory(Category category);
         bool DeleteCategory(Category category);
+        Category GetCategoryTrimToUpper(CategoryDto categoryCreate);
         bool Save();
     }
 }
