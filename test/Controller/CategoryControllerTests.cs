@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using CarReviewApp.Controllers;
 using CarReviewApp.Data;
@@ -27,5 +29,50 @@ public class CategoryControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
+   }
+   [Fact]
+   public void CategoryController_GetCategories_ReturnsOk()
+   {
+        //  Arrange
+        var carCategoryOne = new CarCategory(){CarId = 1, CategoryId = 1, Car = new Car(), Category = new Category()};
+        var carCategoryTwo = new CarCategory(){CarId = 2, CategoryId = 2, Car = new Car(), Category = new Category()};
+        var categoryDtoList = new List<CategoryDto>(){
+            new CategoryDto{
+                Id = 1,
+                Name = "Sport",
+                },
+            new CategoryDto{
+                Id = 1,
+                Name = "Sport",
+                }
+            };
+        var categoryList = new List<Category>(){
+            new Category{
+                Id = 1,
+                Name = "Sport",
+                CarCategories = new List<CarCategory>
+                {carCategoryOne}
+                },
+            new Category{
+                Id = 1,
+                Name = "Sport",
+                CarCategories = new List<CarCategory>
+                {carCategoryTwo}
+                }
+            };
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategories()).Returns(categoryList);
+        mapper.Setup(m => m.Map<List<CategoryDto>>(categoryList)).Returns(categoryDtoList);
+        // Act
+        var result = categoryController.GetCategories() as OkObjectResult;
+        // Assert
+        var returnedCategories = result.Value as IEnumerable<CategoryDto>;
+
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(categoryDtoList.Count, returnedCategories.Count());
+        Assert.Equal(categoryList[0].Name, returnedCategories.ElementAtOrDefault(0).Name);
    }
 }
