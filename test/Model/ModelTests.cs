@@ -26,7 +26,7 @@ public class ModelTests
         Assert.Equal("Audi", car.Make);
         Assert.Equal("A7" ,car.Model);
         Assert.Equal(2015 ,car.YearBuilt);
-        Assert.IsType<List<Reviewer>>(car.Reviews);
+        Assert.IsType<List<Review>>(car.Reviews);
         Assert.IsType<List<CarOwner>>(car.CarOwners);
         Assert.IsType<List<CarCategory>>(car.CarCategories);
     }
@@ -134,7 +134,7 @@ public class ModelTests
         Assert.Equal(1, owner.Id);
         Assert.Equal("test", owner.Name);
         Assert.Equal("test", owner.Surname);
-        Assert.IsType<List<Country>>(owner.Country);
+        Assert.IsType<Country>(owner.Country);
         Assert.IsType<List<CarOwner>>(owner.CarOwners);
     }
 }
