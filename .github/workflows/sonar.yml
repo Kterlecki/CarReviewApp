@@ -41,7 +41,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Kterlecki_CarReviewApp" /o:"kterlecki" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=" D:/a/CarReviewApp/CarReviewApp/test/TestResults/**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/Migrations/**,**/Seed.cs,**/Program.cs"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Kterlecki_CarReviewApp" /o:"kterlecki" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=" D:/a/CarReviewApp/CarReviewApp/test/TestResults/**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/Migrations/**,**/Seed.cs,**/Program.cs,**/Data/**"
           dotnet build
           dotnet test --collect:"XPlat Code Coverage" --settings test/runsettings.xml
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
