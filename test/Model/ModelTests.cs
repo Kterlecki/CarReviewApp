@@ -1,6 +1,5 @@
 
 using System.Collections.Generic;
-using System.Collections;
 using CarReviewApp.Models;
 using Xunit;
 
