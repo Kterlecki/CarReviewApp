@@ -79,4 +79,62 @@ public class ModelTests
         Assert.IsType<Car>(carCategory.Car);
         Assert.IsType<Category>(carCategory.Category);
     }
+    [Fact]
+    public void CarOwner_CreateOwnerInstance_ReturnsCarOwner()
+    {
+        // Arrange
+        var carOwner = new CarOwner{
+                CarId = 1,
+                OwnerId = 1,
+                Car = new Car(),
+                Owner = new Owner()
+            };
+        Assert.Equal(1, carOwner.CarId);
+        Assert.Equal(1, carOwner.OwnerId);
+        Assert.IsType<Car>(carOwner.Car);
+        Assert.IsType<Owner>(carOwner.Owner);
+    }
+    [Fact]
+    public void Category_CreateCategoryInstance_ReturnsCategory()
+    {
+        // Arrange
+        var category = new Category{
+                Id = 1,
+                Name = "test",
+                CarCategories = new List<CarCategory>()
+            };
+        Assert.Equal(1, category.Id);
+        Assert.Equal("test", category.Name);
+        Assert.IsType<List<CarCategory>>(category.CarCategories);
+    }
+    [Fact]
+    public void Country_CreateCountryInstance_ReturnsCountry()
+    {
+        // Arrange
+        var country = new Country{
+                Id = 1,
+                Name = "test",
+                Owners = new List<Owner>()
+            };
+        Assert.Equal(1, country.Id);
+        Assert.Equal("test", country.Name);
+        Assert.IsType<List<Owner>>(country.Owners);
+    }
+    [Fact]
+    public void Owner_CreateOwnerInstance_ReturnsOwner()
+    {
+        // Arrange
+        var owner = new Owner{
+                Id = 1,
+                Name = "test",
+                Surname = "test",
+                Country = new Country(),
+                CarOwners = new List<CarOwner>()
+            };
+        Assert.Equal(1, owner.Id);
+        Assert.Equal("test", owner.Name);
+        Assert.Equal("test", owner.Surname);
+        Assert.IsType<List<Country>>(owner.Country);
+        Assert.IsType<List<CarOwner>>(owner.CarOwners);
+    }
 }
