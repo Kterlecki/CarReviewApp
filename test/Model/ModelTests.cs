@@ -17,7 +17,9 @@ public class ModelTests
             Make = "Audi",
             Model = "A7",
             YearBuilt = 2015,
-            Reviews = new List<Review>()
+            Reviews = new List<Review>(),
+            CarOwners = new List<CarOwner>(),
+            CarCategories = new List<CarCategory>()
         };
         // Assert
         Assert.Equal(1, car.Id);
@@ -25,6 +27,8 @@ public class ModelTests
         Assert.Equal("A7" ,car.Model);
         Assert.Equal(2015 ,car.YearBuilt);
         Assert.IsType<List<Reviewer>>(car.Reviews);
+        Assert.IsType<List<CarOwner>>(car.CarOwners);
+        Assert.IsType<List<CarCategory>>(car.CarCategories);
     }
     [Fact]
     public void Review_CreateReviewInstance_ReturnsReview()
@@ -35,7 +39,8 @@ public class ModelTests
             Title = "example",
             Description = "try example",
             Rating = 1,
-            Reviewer = new Reviewer()
+            Reviewer = new Reviewer(),
+            Car = new Car()
         };
         Assert.Equal(1, review.Id);
         Assert.Equal("example", review.Title);
@@ -58,5 +63,20 @@ public class ModelTests
         Assert.Equal("Test", reviewer.FirstName);
         Assert.Equal("tests" ,reviewer.LastName);
         Assert.IsType<List<Review>>(reviewer.Reviews);
+    }
+    [Fact]
+    public void CarCategory_CreateCarCategoryInstance_ReturnsCarCategory()
+    {
+        // Arrange
+        var carCategory = new CarCategory{
+                CarId = 1,
+                CategoryId = 1,
+                Car = new Car(),
+                Category = new Category()
+            };
+        Assert.Equal(1, carCategory.CarId);
+        Assert.Equal(1, carCategory.CategoryId);
+        Assert.IsType<Car>(carCategory.Car);
+        Assert.IsType<Category>(carCategory.Category);
     }
 }
