@@ -82,7 +82,6 @@ public class CategoryControllerTests
         // Act
         var result = categoryController.GetCategory(id);
         // Assert
-        var restwo = result as OkObjectResult;
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnedCategoryDto = Assert.IsType<CategoryDto>(okResult.Value);
@@ -101,14 +100,13 @@ public class CategoryControllerTests
         // Act
         var result = categoryController.GetCategory(id);
         // Assert
-        var restwo = result as OkObjectResult;
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
         var returnedCategoryDto = Assert.IsType<CategoryDto>(okResult.Value);
         Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
    }
     [Fact]
-   public void CategoryController_UpdateCategory_ReturnsOk()
+   public void CategoryController_UpdateCategory_ReturnsNoContent()
    {
         //  Arrange
         var categoryRepository = new Mock<ICategoryRepository>();
@@ -117,14 +115,27 @@ public class CategoryControllerTests
         categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
         categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
         mapper.Setup(m => m.Map<Category>(It.IsAny<CategoryDto>())).Returns(category);
-        categoryRepository.Setup(c => c.UpdateCategory(It.Is.IsAny<CategoryDto>()))
+        categoryRepository.Setup(c => c.UpdateCategory(It.IsAny<Category>())).Returns(true);
         // Act
         var result = categoryController.UpdateCategory(id, categoryDto);
         // Assert
-        var restwo = result as OkObjectResult;
         Assert.NotNull(result);
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedCategoryDto = Assert.IsType<CategoryDto>(okResult.Value);
-        Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
+        Assert.IsType<NoContentResult>(result);
+   }
+   [Fact]
+   public void CategoryController_DeleteCategory_ReturnsOk()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        categoryRepository.Setup(c => c.DeleteCategory(It.IsAny<Category>())).Returns(true);
+        // Act
+        var result = categoryController.DeleteCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NoContentResult>(result);
    }
 }
