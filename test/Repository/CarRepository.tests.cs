@@ -85,4 +85,29 @@ public class CarRepositoryTests
         // Assert
         result.Should().BeNull();
     }
+    [Fact]
+    public void GetCarByMake_ShouldReturCar_WhenCarExist()
+    {
+        // Arrange
+        var carMake = "Audi";
+
+        // Act
+        var result = _repository.GetCar(carMake);
+
+        // Assert
+        result.Should().BeOfType<Car>();
+        Assert.Matches(result.Make, "Audi");
+    }
+    [Fact]
+    public void GetCarByMake_ShouldReturNull_WhenCarDoesntExist()
+    {
+        // Arrange
+        var carMake = "Audi X";
+
+        // Act
+        var result = _repository.GetCar(carMake);
+
+        // Assert
+        result.Should().BeNull();
+    }
 }
