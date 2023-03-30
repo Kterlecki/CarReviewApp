@@ -8,6 +8,8 @@ using CarReviewApp.Repository;
 using Microsoft.EntityFrameworkCore;
 using CarReviewApp.Models;
 using System.Collections.Generic;
+using Moq;
+using CarReviewApp.Interfaces;
 
 public class CarRepositoryTests
 {
@@ -160,4 +162,30 @@ public class CarRepositoryTests
         var resultCount = result.Count;
         resultCount.Should().Be(3);
     }
+    [Fact]
+    public void CreateCar_ShouldCreateNewCar_WhenCalled()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Car
+        {
+            Id = 55,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020,
+            Reviews = new List<Review>(),
+            CarOwners = new List<CarOwner>(),
+            CarCategories = new List<CarCategory>()
+        };
+        var mockContex = new Mock<IDataContextWrapper>();
+        mockContex.Setup(x => x.CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
+        var repository = new CarRepository(mockContex.Object.CreateDataContext());
+        // Act
+        var result = _repository.CreateCar(ownerId, categoryId, car);
+        // Assert
+        Assert.True(result);
+    }
+
+    
 }
