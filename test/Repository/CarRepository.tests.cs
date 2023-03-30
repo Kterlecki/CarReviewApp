@@ -181,6 +181,7 @@ public class CarRepositoryTests
         var mockContex = new Mock<IDataContextWrapper>();
         mockContex.Setup(x => x.CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
         var repository = new CarRepository(mockContex.Object.CreateDataContext());
+        var repo = new Mock<ICarRepository>();
         // Act
         var result = _repository.CreateCar(ownerId, categoryId, car);
         // Assert
