@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Xunit;
 using FluentAssertions;
@@ -28,7 +29,20 @@ public class CarRepositoryTests
             if (!databaseContext.Cars.Any())
             {
                     databaseContext.Cars.AddRange(
-                            new Car { Id = 1, Make = "Audi", Model = "A7", YearBuilt = 2015, Reviews = new List<Review>(), CarOwners = new List<CarOwner>(), CarCategories = new List<CarCategory>()},
+                            new Car { Id = 1, Make = "Audi", Model = "A7", YearBuilt = 2015,
+                            Reviews = new List<Review>{
+                                new Review{ Id = 1,
+                                            Title = "example",
+                                            Description = "try example",
+                                            Rating = 1,
+                                            Reviewer = new Reviewer(),
+                                            Car = new Car()},
+                                new Review{ Id = 2,
+                                            Title = "example",
+                                            Description = "try example",
+                                            Rating = 1,
+                                            Reviewer = new Reviewer(),
+                                            Car = new Car()}}, CarOwners = new List<CarOwner>(), CarCategories = new List<CarCategory>()},
                             new Car { Id = 2, Make = "Toyota", Model = "Camry", YearBuilt = 2020 , Reviews = new List<Review>(), CarOwners = new List<CarOwner>(), CarCategories = new List<CarCategory>()},
                             new Car { Id = 3, Make = "Honda", Model = "Civic", YearBuilt = 2019 , Reviews = new List<Review>(), CarOwners = new List<CarOwner>(), CarCategories = new List<CarCategory>()}
                         );
@@ -109,5 +123,30 @@ public class CarRepositoryTests
 
         // Assert
         result.Should().BeNull();
+    }
+    [Fact]
+    public void GetCarRating_ShouldReturRating_WhenCarExist()
+    {
+        // Arrange
+        var carId = 1;
+
+        // Act
+        var result = _repository.GetCarRating(carId);
+
+        // Assert
+        Assert.IsType<decimal>(result);
+    }
+     [Fact]
+    public void GetCarRating_ShouldReturZero_WhenNoReviewsAreFound()
+    {
+        // Arrange
+        var carId = 5;
+
+        // Act
+        var result = _repository.GetCarRating(carId);
+
+        // Assert
+        Assert.IsType<decimal>(result);
+        result.Should().Be(0);
     }
 }
