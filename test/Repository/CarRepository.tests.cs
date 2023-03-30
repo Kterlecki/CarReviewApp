@@ -136,7 +136,7 @@ public class CarRepositoryTests
         // Assert
         Assert.IsType<decimal>(result);
     }
-     [Fact]
+    [Fact]
     public void GetCarRating_ShouldReturZero_WhenNoReviewsAreFound()
     {
         // Arrange
@@ -148,5 +148,16 @@ public class CarRepositoryTests
         // Assert
         Assert.IsType<decimal>(result);
         result.Should().Be(0);
+    }
+    [Fact]
+    public void GetCars_ShouldReturnCarList_WhenCalled()
+    {
+        // Act
+        var result = _repository.GetCars();
+
+        // Assert
+        Assert.IsType<List<Car>>(result);
+        var resultCount = result.Count;
+        resultCount.Should().Be(3);
     }
 }
