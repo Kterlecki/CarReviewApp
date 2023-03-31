@@ -10,6 +10,7 @@ using CarReviewApp.Models;
 using System.Collections.Generic;
 using Moq;
 using CarReviewApp.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CarReviewApp.tests.Repository;
 
@@ -182,8 +183,6 @@ public class CarRepositoryTests
             Model = "Civic",
             YearBuilt = 2020
         };
-        var mockContex = new Mock<IDataContextWrapper>();
-        mockContex.Setup(x => x.CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
         var mockRepository = new Mock<ICarRepository>();
         mockRepository.Setup(x => x.Save()).Returns(true);
 
@@ -211,6 +210,20 @@ public class CarRepositoryTests
         A.CallTo(() => mockRepository.Save()).Returns(true);
         // Act
         var result = _repository.CreateCar(ownerId, categoryId, car);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void UpdateCar_ShouldUpdateCar_WhenCalled()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Mock<Car>();
+        var mockRepository = new Mock<ICarRepository>();
+        mockRepository.Setup(x => x.Save()).Returns(true);
+        // Act
+        var result = _repository.UpdateCar(ownerId, categoryId, car.Object);
         // Assert
         Assert.True(result);
     }
