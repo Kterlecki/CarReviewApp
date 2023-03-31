@@ -227,4 +227,25 @@ public class CarRepositoryTests
         // Assert
         Assert.True(result);
     }
+    [Fact]
+    public void DeleteCar_ShouldDeleteCar_WhenCalled()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Car
+        {
+            Id = 5555,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        var mockRepository = new Mock<ICarRepository>();
+        mockRepository.Setup(x => x.Save()).Returns(true);
+        // Act
+        var result = _repository.CreateCar(ownerId, categoryId, car);
+        var resultDelete = _repository.DeleteCar(car);
+        // Assert
+        Assert.True(resultDelete);
+    }
 }
