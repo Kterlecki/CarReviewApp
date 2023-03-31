@@ -86,8 +86,7 @@ namespace CarReviewApp.Repository
 
         public Car GetCarTrimToUpper(CarDto carCreate)
         {
-            return GetCars().Where(c => c.Model.Trim().ToUpper() == carCreate.Model.TrimEnd().ToUpper())
-                .FirstOrDefault();
+            return GetCars().FirstOrDefault(c => c.Model.Trim().ToUpper() == carCreate.Model.TrimEnd().ToUpper());
         }
     }
 }

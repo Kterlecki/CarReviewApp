@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Moq;
 using CarReviewApp.Interfaces;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using CarReviewApp.Dto;
 
 namespace CarReviewApp.tests.Repository;
 
@@ -247,5 +248,23 @@ public class CarRepositoryTests
         var resultDelete = _repository.DeleteCar(car);
         // Assert
         Assert.True(resultDelete);
+    }
+    [Fact]
+    public void GetCarTrimToUpper_ShouldGetCars_WhenCalled()
+    {
+        // Arrange
+        var carCreate = new CarDto
+        {
+            Id = 3,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        // Act
+        var result = _repository.GetCarTrimToUpper(carCreate);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<Car>();
+        Assert.Equal(3, result.Id);
     }
 }
