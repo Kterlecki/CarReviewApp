@@ -10,6 +10,10 @@ using CarReviewApp.Models;
 using System.Collections.Generic;
 using Moq;
 using CarReviewApp.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using CarReviewApp.Dto;
+
+namespace CarReviewApp.tests.Repository;
 
 public class CarRepositoryTests
 {
@@ -19,7 +23,6 @@ public class CarRepositoryTests
     {
         _repository = new CarRepository(GetDbContext());
     }
-    
     private static DataContext GetDbContext()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
@@ -181,8 +184,6 @@ public class CarRepositoryTests
             Model = "Civic",
             YearBuilt = 2020
         };
-        var mockContex = new Mock<IDataContextWrapper>();
-        mockContex.Setup(x => x.CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
         var mockRepository = new Mock<ICarRepository>();
         mockRepository.Setup(x => x.Save()).Returns(true);
 
@@ -191,33 +192,79 @@ public class CarRepositoryTests
         // Assert
         Assert.True(result);
     }
-    // [Fact]
-    // public void CreateCar_ShouldCreateNewCar_WhenCalled2()
-    // {
-    //     // Arrange
-    //     var ownerId = 1;
-    //     var categoryId = 1;
-    //     var owner = A.Fake<Owner>();
-    //     var category = A.Fake<Category>();
-    //     var carOwner = A.Fake<CarOwner>();
-    //     var car = new Car
-    //     {
-    //         Id = 55,
-    //         Make = "Honda",
-    //         Model = "Civic",
-    //         YearBuilt = 2020
-    //     };
-    //     var mockContex = A.Fake<IDataContextWrapper>();
-    //     var mockContexObject = mockContex.CreateDataContext();
-    //     //A.CallTo(() => CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
-    //     var mockRepository = A.Fake<ICarRepository>();
-    //     A.CallTo(() => mockContexObject.Owners.Where(a => a.Id == ownerId).FirstOrDefault()).Returns(owner);
-    //     A.CallTo(() => mockContexObject.Categories.Where(c =>c.Id == categoryId).FirstOrDefault()).Returns(category);
-    //     // A.CallTo(() => mockContexObject.Add(carOwner)).Returns(carOwner);
-    //     A.CallTo(() => mockRepository.Save()).Returns(true);
-    //     // Act
-    //     var result = _repository.CreateCar(ownerId, categoryId, car);
-    //     // Assert
-    //     Assert.True(result);
-    // }
+    [Fact]
+    public void CreateCar_ShouldCreateNewCar_WhenCalled_UsingFakeItEasy()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Car
+        {
+            Id = 555,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        var mockContex = A.Fake<IDataContextWrapper>();
+        var mockContexObject = mockContex.CreateDataContext();
+        var mockRepository = A.Fake<ICarRepository>();
+        A.CallTo(() => mockRepository.Save()).Returns(true);
+        // Act
+        var result = _repository.CreateCar(ownerId, categoryId, car);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void UpdateCar_ShouldUpdateCar_WhenCalled()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Mock<Car>();
+        var mockRepository = new Mock<ICarRepository>();
+        mockRepository.Setup(x => x.Save()).Returns(true);
+        // Act
+        var result = _repository.UpdateCar(ownerId, categoryId, car.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void DeleteCar_ShouldDeleteCar_WhenCalled()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Car
+        {
+            Id = 5555,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        var mockRepository = new Mock<ICarRepository>();
+        mockRepository.Setup(x => x.Save()).Returns(true);
+        // Act
+        var result = _repository.CreateCar(ownerId, categoryId, car);
+        var resultDelete = _repository.DeleteCar(car);
+        // Assert
+        Assert.True(resultDelete);
+    }
+    [Fact]
+    public void GetCarTrimToUpper_ShouldGetCars_WhenCalled()
+    {
+        // Arrange
+        var carCreate = new CarDto
+        {
+            Id = 3,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        // Act
+        var result = _repository.GetCarTrimToUpper(carCreate);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<Car>();
+        Assert.Equal(3, result.Id);
+    }
 }
