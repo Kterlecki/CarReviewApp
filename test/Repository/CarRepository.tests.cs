@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using Moq;
 using CarReviewApp.Interfaces;
 
+namespace CarReviewApp.tests.Repository;
+
 public class CarRepositoryTests
 {
     private readonly CarRepository _repository;
@@ -19,7 +21,6 @@ public class CarRepositoryTests
     {
         _repository = new CarRepository(GetDbContext());
     }
-    
     private static DataContext GetDbContext()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
@@ -191,33 +192,26 @@ public class CarRepositoryTests
         // Assert
         Assert.True(result);
     }
-    // [Fact]
-    // public void CreateCar_ShouldCreateNewCar_WhenCalled2()
-    // {
-    //     // Arrange
-    //     var ownerId = 1;
-    //     var categoryId = 1;
-    //     var owner = A.Fake<Owner>();
-    //     var category = A.Fake<Category>();
-    //     var carOwner = A.Fake<CarOwner>();
-    //     var car = new Car
-    //     {
-    //         Id = 55,
-    //         Make = "Honda",
-    //         Model = "Civic",
-    //         YearBuilt = 2020
-    //     };
-    //     var mockContex = A.Fake<IDataContextWrapper>();
-    //     var mockContexObject = mockContex.CreateDataContext();
-    //     //A.CallTo(() => CreateDataContext()).Returns(new DataContext(new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase("testDb").Options));
-    //     var mockRepository = A.Fake<ICarRepository>();
-    //     A.CallTo(() => mockContexObject.Owners.Where(a => a.Id == ownerId).FirstOrDefault()).Returns(owner);
-    //     A.CallTo(() => mockContexObject.Categories.Where(c =>c.Id == categoryId).FirstOrDefault()).Returns(category);
-    //     // A.CallTo(() => mockContexObject.Add(carOwner)).Returns(carOwner);
-    //     A.CallTo(() => mockRepository.Save()).Returns(true);
-    //     // Act
-    //     var result = _repository.CreateCar(ownerId, categoryId, car);
-    //     // Assert
-    //     Assert.True(result);
-    // }
+    [Fact]
+    public void CreateCar_ShouldCreateNewCar_WhenCalled_UsingFakeItEasy()
+    {
+        // Arrange
+        var ownerId = 1;
+        var categoryId = 1;
+        var car = new Car
+        {
+            Id = 555,
+            Make = "Honda",
+            Model = "Civic",
+            YearBuilt = 2020
+        };
+        var mockContex = A.Fake<IDataContextWrapper>();
+        var mockContexObject = mockContex.CreateDataContext();
+        var mockRepository = A.Fake<ICarRepository>();
+        A.CallTo(() => mockRepository.Save()).Returns(true);
+        // Act
+        var result = _repository.CreateCar(ownerId, categoryId, car);
+        // Assert
+        Assert.True(result);
+    }
 }
