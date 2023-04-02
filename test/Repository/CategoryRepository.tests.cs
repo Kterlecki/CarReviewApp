@@ -89,4 +89,24 @@ public class CategoryRepositoryTests
         Assert.Equal(2, result.Count);
         result.Should().BeOfType<List<Category>>();
     }
+    [Fact]
+    public void GetCategory_ShouldReturnCategory_WhenGivenCorrectCategoryId()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.GetCategory(id);
+        // Assert
+        Assert.Equal("Category 1", result.Name);
+    }
+    [Fact]
+    public void GetCategory_ShouldReturnNull_WhenGivenInCorrectCategoryId()
+    {
+        // Arrange
+        var id = 5;
+        // Act
+        var result = _repository.GetCategory(id);
+        // Assert
+            result.Should().BeNull();
+    }
 }
