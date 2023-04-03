@@ -62,7 +62,7 @@ public class CategoryRepositoryTests
     public void CategoryExists_ShouldReturnFalse_WhenCarDoesntExists()
     {
         // Arrange
-        var id = 5;
+        var id = 556;
         // Act
         var result = _repository.CategoryExists(id);
         // Assert
@@ -103,7 +103,7 @@ public class CategoryRepositoryTests
     public void GetCategory_ShouldReturnNull_WhenGivenInCorrectCategoryId()
     {
         // Arrange
-        var id = 5;
+        var id = 555;
         // Act
         var result = _repository.GetCategory(id);
         // Assert
@@ -128,9 +128,31 @@ public class CategoryRepositoryTests
         var category = new Category { Id = 5, Name = "Category 2", CarCategories = new List<CarCategory>() };
         // Act
         var result = _repository.CreateCategory(category);
-        var resultOFUpdate = _repository.UpdateCategory(category);
+        var resultOfUpdate = _repository.UpdateCategory(category);
         // Assert
-        resultOFUpdate.Should().BeTrue();
+        resultOfUpdate.Should().BeTrue();
     }
-    
+    [Fact]
+    public void DeleteCategory_ShouldReturnTrue_WhenGivenCategory()
+    {
+        // Arrange
+        var category = new Category { Id = 11, Name = "Category 2", CarCategories = new List<CarCategory>() };
+        // Act
+        var result = _repository.CreateCategory(category);
+        var resultOfDelete = _repository.DeleteCategory(category);
+        // Assert
+        resultOfDelete.Should().BeTrue();
+    }
+    [Fact]
+    public void GetCategoryTrimToUpper_ShouldReturnCategory_WhenGivenCategoryDto()
+    {
+        // Arrange
+        var categoryDto = new CategoryDto { Name = "Category 2"};
+        // Act
+        var result = _repository.GetCategoryTrimToUpper(categoryDto);
+        // Assert
+        Assert.Equal("Category 2", result.Name);
+        Assert.Equal(2, result.Id);
+        result.Should().BeOfType<Category>();
+    }
 }
