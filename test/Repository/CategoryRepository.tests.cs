@@ -109,4 +109,28 @@ public class CategoryRepositoryTests
         // Assert
             result.Should().BeNull();
     }
+
+    [Fact]
+    public void CreateCategory_ShouldReturnTrue_WhenGivenCategory()
+    {
+        // Arrange
+        var category = new Category { Id = 30, Name = "Category 2", CarCategories = new List<CarCategory>() };
+        // Act
+        var result = _repository.CreateCategory(category);
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void UpdateCategory_ShouldReturnTrue_WhenGivenCategory()
+    {
+        // Arrange
+        var category = new Category { Id = 5, Name = "Category 2", CarCategories = new List<CarCategory>() };
+        // Act
+        var result = _repository.CreateCategory(category);
+        var resultOFUpdate = _repository.UpdateCategory(category);
+        // Assert
+        resultOFUpdate.Should().BeTrue();
+    }
+    
 }
