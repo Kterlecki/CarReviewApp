@@ -89,22 +89,34 @@ public class CategoryControllerTests
         Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
    }
    [Fact]
-   public void CategoryController_GetCarByCategoryId_ReturnsOk()
+   public void GetCarByCategoryId_GetCarByCategoryIdSuccesfully_ReturnsOk()
+   {
+          //  Arrange
+          var carList = new Mock<List<Car>>();
+          var _categoryRepository = new Mock<ICategoryRepository>();
+          var _mapper = new Mock<IMapper>();
+          var categoryController = new CategoryController(_categoryRepository.Object, _mapper.Object);
+          _categoryRepository.Setup(c => c.GetCarByCategory(It.IsAny<int>())).Returns(carList.Object);
+          _mapper.Setup(m => m.Map<List<Car>>(It.IsAny<int>())).Returns(carList.Object);
+          // Act
+          var result = categoryController.GetCarByCategoryId(id);
+          // Assert
+          Assert.NotNull(result);
+          Assert.IsType<OkObjectResult>(result);
+   }
+   [Fact]
+   public void GetCarByCategoryId_ValidateWhenModelStateIsInvalid_ReturnsBadRequest()
    {
         //  Arrange
-        var categoryRepository = new Mock<ICategoryRepository>();
-        var mapper = new Mock<IMapper>();
-        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
-        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
-        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
-        mapper.Setup(m => m.Map<CategoryDto>(category)).Returns(categoryDto);
-        // Act
-        var result = categoryController.GetCategory(id);
-        // Assert
-        Assert.NotNull(result);
-        var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedCategoryDto = Assert.IsType<CategoryDto>(okResult.Value);
-        Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
+          var _categoryRepository = new Mock<ICategoryRepository>();
+          var _mapper = new Mock<IMapper>();
+          var categoryController = new CategoryController(_categoryRepository.Object, _mapper.Object);
+          categoryController.ModelState.AddModelError("", "error");
+          // Act
+          var result = categoryController.GetCarByCategoryId(id);
+          // Assert
+          Assert.NotNull(result);
+          Assert.IsType<BadRequestResult>(result);
    }
      [Fact]
    public void UpdateCategory_UpdateCategorySuccessfully_ReturnsNoContent()
