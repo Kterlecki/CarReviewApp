@@ -89,6 +89,37 @@ public class CategoryControllerTests
         Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
    }
    [Fact]
+   public void GetCategory_ValidateWhenModelStateIsInvalid_ReturnsBadRequest()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        mapper.Setup(m => m.Map<CategoryDto>(category)).Returns(categoryDto);
+        categoryController.ModelState.AddModelError("","Error");
+        // Act
+        var result = categoryController.GetCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        }
+     [Fact]
+   public void GetCategory_ValidateWhenCategoryExistsIsSetToFalse_ReturnsNotFound()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(false);
+        // Act
+        var result = categoryController.GetCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NotFoundResult>(result);
+        }
+   [Fact]
    public void GetCarByCategoryId_GetCarByCategoryIdSuccesfully_ReturnsOk()
    {
           //  Arrange
