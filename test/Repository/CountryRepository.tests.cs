@@ -14,12 +14,12 @@ namespace CarReviewApp.tests.Repository;
 public class CountryRepositoryTests
 {
     private readonly DataContext _context;
-    private readonly CategoryRepository _repository;
+    private readonly CountryRepository _repository;
 
     public CountryRepositoryTests()
     {
         _context = GetDbContext();
-        _repository = new CategoryRepository(_context);
+        _repository = new CountryRepository(_context);
     }
     private static DataContext GetDbContext()
         {
@@ -36,15 +36,45 @@ public class CountryRepositoryTests
                         Owners = new List<Owner>{ new Owner {
                             Id = 1, Name = "Bob"
                         }} },
-                        new Country { Id = 2, Name = "Country 2", 
+                        new Country { Id = 2, Name = "Country 2",
                         Owners = new List<Owner>() }
                             );
                     databaseContext.Owners.Add(
-                        new Owner { Id = 1, Name = "Audi"}
+                        new Owner { Id = 3, Name = "Audi", Surname = "VanB"}
                     );
                     databaseContext.SaveChanges();
             }
             return databaseContext;
         }
-    
+    [Fact]
+    public void CountryExists_GivenCorrectId_ReturnsTrue()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.CountryExists(id);
+        // Assert
+        result.Should().BeTrue();
+    }
+    [Fact]
+    public void GetCountries_WhenCalled_ReturnsListOfCountries()
+    {
+        // Arrange
+        // Act
+        var result = _repository.GetCountries();
+        // Assert
+        result.Should().BeOfType<List<Country>>();
+        Assert.Equal(2, result.Count);
+    }
+    [Fact]
+    public void GetCountry_GivenCorrectId_ReturnsCountry()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.GetCountry(id);
+        // Assert
+        result.Should().BeOfType<Country>();
+        Assert.Equal("Country 1", result.Name);
+    }
 }
