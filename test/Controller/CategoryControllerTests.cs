@@ -123,7 +123,7 @@ public class CategoryControllerTests
         Assert.IsType<NoContentResult>(result);
    }
    [Fact]
-   public void CategoryController_DeleteCategory_ReturnsOk()
+   public void CategoryController_DeleteCategory_ReturnsNoContent()
    {
         //  Arrange
         var categoryRepository = new Mock<ICategoryRepository>();
@@ -137,5 +137,51 @@ public class CategoryControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<NoContentResult>(result);
+   }
+   [Fact]
+   public void CategoryController_DeleteCategoryValidationSetToFalse_ReturnsNoContent()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        categoryRepository.Setup(c => c.DeleteCategory(It.IsAny<Category>())).Returns(false);
+        // Act
+        var result = categoryController.DeleteCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NoContentResult>(result);
+   }
+   [Fact]
+   public void CategoryController_DeleteCategoryModelStateIsInvalid_ReturnsBadRequest()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        categoryController.ModelState.AddModelError("", "Error");
+        // Act
+        var result = categoryController.DeleteCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+   }
+   [Fact]
+   public void CategoryController_DeleteCategoryValidationCategoryExistIsSetToFalse_ReturnsNotFound()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(false);
+        // Act
+        var result = categoryController.DeleteCategory(id);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NotFoundResult>(result);
    }
 }
