@@ -1,16 +1,11 @@
-using System;
 using System.Linq;
 using Xunit;
 using FluentAssertions;
-using FakeItEasy;
 using CarReviewApp.Data;
 using CarReviewApp.Repository;
 using Microsoft.EntityFrameworkCore;
 using CarReviewApp.Models;
 using System.Collections.Generic;
-using Moq;
-using CarReviewApp.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using CarReviewApp.Dto;
 namespace CarReviewApp.tests.Repository;
 
