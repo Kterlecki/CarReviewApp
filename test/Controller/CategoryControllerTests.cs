@@ -8,6 +8,7 @@ using CarReviewApp.Dto;
 using CarReviewApp.Interfaces;
 using CarReviewApp.Models;
 using CarReviewApp.Repository;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -105,8 +106,8 @@ public class CategoryControllerTests
         var returnedCategoryDto = Assert.IsType<CategoryDto>(okResult.Value);
         Assert.Equal(categoryDto.Name, returnedCategoryDto.Name);
    }
-    [Fact]
-   public void CategoryController_UpdateCategory_ReturnsNoContent()
+     [Fact]
+   public void UpdateCategory_UpdateCategorySuccessfully_ReturnsNoContent()
    {
         //  Arrange
         var categoryRepository = new Mock<ICategoryRepository>();
@@ -122,6 +123,85 @@ public class CategoryControllerTests
         Assert.NotNull(result);
         Assert.IsType<NoContentResult>(result);
    }
+   [Fact]
+   public void UpdateCategory_ValidateWhenUpdateCategoryIsSetToFalse_ReturnsStatusCode500()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        mapper.Setup(m => m.Map<Category>(It.IsAny<CategoryDto>())).Returns(category);
+        categoryRepository.Setup(c => c.UpdateCategory(It.IsAny<Category>())).Returns(false);
+        // Act
+        var result = categoryController.UpdateCategory(id, categoryDto);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<ObjectResult>(result);
+        result.As<ObjectResult>().StatusCode.Should().Be(500);
+   }
+   [Fact]
+   public void UpdateCategory_ValidateWhenModelStateIsInvalid_ReturnsStatusBadRequest()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(true);
+        categoryController.ModelState.AddModelError("", "errror");
+        // Act
+        var result = categoryController.UpdateCategory(id, categoryDto);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestResult>(result);
+   }
+   [Fact]
+   public void UpdateCategory_ValidateWhenCategoryExistSetToFalse_ReturnsNotFound()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        categoryRepository.Setup(c => c.CategoryExists(It.IsAny<int>())).Returns(false);
+        // Act
+        var result = categoryController.UpdateCategory(id, categoryDto);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NotFoundResult>(result);
+   }
+   [Fact]
+   public void UpdateCategory_ValidateWhenTwoIdsNotMatching_ReturnsNotFound()
+   {
+        //  Arrange
+        var id = 2;
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        categoryRepository.Setup(c => c.GetCategory(It.IsAny<int>())).Returns(category);
+        // Act
+        var result = categoryController.UpdateCategory(id, categoryDto);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+   }
+   [Fact]
+   public void UpdateCategory_ValidateWhenUpdateCategoryIsNull_ReturnsBadRequest()
+   {
+        //  Arrange
+        var categoryRepository = new Mock<ICategoryRepository>();
+        var mapper = new Mock<IMapper>();
+        var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+        CategoryDto categoryDto = null!;
+        // Act
+        var result = categoryController.UpdateCategory(id, categoryDto);
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+   }
+
    [Fact]
    public void CategoryController_DeleteCategory_ReturnsNoContent()
    {
