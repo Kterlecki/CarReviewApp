@@ -71,6 +71,22 @@ public class CategoryControllerTests
         Assert.Equal(categoryList[0].Name, returnedCategories.ElementAtOrDefault(0).Name);
    }
    [Fact]
+   public void GetCategories_ValidateWhenModelStateIsInvalid_ReturnsBadRequest()
+   {
+          //  Arrange
+          var categoryRepository = new Mock<ICategoryRepository>();
+          var mapper = new Mock<IMapper>();
+          var categoryController = new CategoryController(categoryRepository.Object, mapper.Object);
+          categoryRepository.Setup(c => c.GetCategories()).Returns(categoryList);
+          mapper.Setup(m => m.Map<List<CategoryDto>>(categoryList)).Returns(categoryDtoList);
+          categoryController.ModelState.AddModelError("", "error");
+          // Act
+          var result = categoryController.GetCategories();
+          // Assert
+          Assert.NotNull(result);
+          Assert.IsType<BadRequestObjectResult>(result);
+   }
+   [Fact]
    public void CategoryController_GetCategory_ReturnsOk()
    {
         //  Arrange
