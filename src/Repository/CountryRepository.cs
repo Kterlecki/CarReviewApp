@@ -66,8 +66,7 @@ namespace CarReviewApp.Repository
         public Country CountryGetTrimToUpper(CountryDto countryCreate)
         {
             return GetCountries()
-                .Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.TrimEnd().ToUpper())
-                .FirstOrDefault();
+                .FirstOrDefault(c => c.Name.Trim().ToUpper() == countryCreate.Name.TrimEnd().ToUpper());
         }
     }
 }
