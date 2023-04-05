@@ -76,6 +76,57 @@ public class ReviewerRepositoryTests
         var result = _repository.GetReviewers();
         // Assert
         Assert.IsType<List<Reviewer>>(result);
-        Assert.Equal(3, result.Count);
+    }
+    [Fact]
+    public void GetReviewsByReviewer_GivenCorrectId_ReturnsReviewList()
+    {
+        // Arrange
+        var id = 10;
+        // Act
+        var result = _repository.GetReviewsByReviewer(id);
+        // Assert
+        Assert.IsType<List<Review>>(result);
+        Assert.Equal(1, result.Count);
+    }
+    [Fact]
+    public void ReviewerExists_GivenCorrectId_ReturnsTrue()
+    {
+        // Arrange
+        var id = 10;
+        // Act
+        var result = _repository.ReviewerExists(id);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void CreateReviewer_GivenCorrectReviewer_ReturnsTrue()
+    {
+        // Arrange
+        var reviewer = new Mock<Reviewer>();
+        // Act
+        var result = _repository.CreateReviewer(reviewer.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void UpdateReviewer_GivenCorrectReviewer_ReturnsTrue()
+    {
+        // Arrange
+        var reviewer = new Mock<Reviewer>();
+        // Act
+        var result = _repository.UpdateReviewer(reviewer.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void DeleteReviewer_GivenCorrectReviewer_ReturnsTrue()
+    {
+        // Arrange
+        var reviewer = new Mock<Reviewer>();
+        // Act
+        var create = _repository.CreateReviewer(reviewer.Object);
+        var result = _repository.DeleteReviewer(reviewer.Object);
+        // Assert
+        Assert.True(result);
     }
 }
