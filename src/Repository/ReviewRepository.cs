@@ -67,8 +67,7 @@ namespace CarReviewApp.Repository
         public Review GetCarTrimToUpper(ReviewDto reviewCreate)
         {
             return GetReviews()
-                .Where(c => c.Title.Trim().ToUpper() == reviewCreate.Title.TrimEnd().ToUpper())
-                .FirstOrDefault();
+                .FirstOrDefault(c => c.Title.Trim().ToUpper() == reviewCreate.Title.TrimEnd().ToUpper());
         }
     }
 }

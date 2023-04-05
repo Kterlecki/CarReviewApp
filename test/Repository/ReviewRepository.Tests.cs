@@ -76,4 +76,63 @@ public class ReviewRepositoryTests
         Assert.IsType<List<Review>>(result);
         Assert.Equal(1, result.Count);
     }
+    [Fact]
+    public void ReviewExists_WhenInvoked_ReturnsTrue()
+    {
+        // Arrange
+        int id = 1;
+        // Act
+        var result = _repository.ReviewExists(id);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void CreateReview_WhenInvoked_ReturnsTrue()
+    {
+        // Arrange
+        var review = new Review
+        {
+            Id = 55,
+            Title = "TestCreateMethod",
+            Description = "Test Creation",
+            Rating = 4
+        };
+        // Act
+        var result = _repository.CreateReview(review);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void UpdateReview_WhenInvoked_ReturnsTrue()
+    {
+        // Arrange
+        var review = new Mock<Review>();
+        // Act
+        var result = _repository.UpdateReview(review.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void DeleteReview_WhenInvoked_ReturnsTrue()
+    {
+        // Arrange
+        var review = new Mock<Review>();
+        review.Object.Id = 55;
+        // Act
+        var create = _repository.CreateReview(review.Object);
+        var result = _repository.DeleteReview(review.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void GetCarTrimToUpper_WhenInvoked_ReturnsTrue()
+    {
+        // Arrange
+        var review = new Mock<ReviewDto>();
+        review.Object.Title = "Review 1";
+        // Act
+        var result = _repository.GetCarTrimToUpper(review.Object);
+        // Assert
+        Assert.Equal("Review 1", result.Title);
+    }
 }
