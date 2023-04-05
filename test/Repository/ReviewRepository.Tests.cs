@@ -32,15 +32,48 @@ public class ReviewRepositoryTests
             if (!databaseContext.Reviews.Any())
             {
                     databaseContext.Reviews.AddRange(
-                        new Review { Id = 1, Title = "Review 1", Description = "Test Desc", Rating = 3
+                        new Review { Id = 1, Title = "Review 1", Description = "Test Desc", Rating = 3,
                         Reviewer = new Reviewer{ Id = 1, FirstName = "John", LastName = "Doe"},
                         Car = new Car { Id = 1, Make = "Audi", Model = "A5", YearBuilt = 2021} }
                             );
-                    databaseContext.Reviews.Add(
-                        new Owner { Id = 3, Name = "Audi", Surname = "VanB"}
+                    databaseContext.Cars.Add(
+                        new Car { Id = 2, Make = "Bmw", Model = "A5", YearBuilt = 2021}
                     );
                     databaseContext.SaveChanges();
             }
             return databaseContext;
         }
+    [Fact]
+    public void GetReviews_WhenInvoked_ReturnsReviewList()
+    {
+        // Arrange
+
+        // Act
+        var result = _repository.GetReviews();
+        // Assert
+        Assert.IsType<List<Review>>(result);
+        Assert.Equal(1, result.Count);
+    }
+    [Fact]
+    public void GetReview_WhenInvoked_ReturnsReviewInstance()
+    {
+        // Arrange
+        int id = 1;
+        // Act
+        var result = _repository.GetReview(id);
+        // Assert
+        Assert.IsType<Review>(result);
+        Assert.Equal("Review 1", result.Title);
+    }
+    [Fact]
+    public void GetReviewsOfACar_WhenInvoked_ReturnsReviewList()
+    {
+        // Arrange
+        int id = 1;
+        // Act
+        var result = _repository.GetReviewsOfACar(id);
+        // Assert
+        Assert.IsType<List<Review>>(result);
+        Assert.Equal(1, result.Count);
+    }
 }
