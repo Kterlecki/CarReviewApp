@@ -39,4 +39,35 @@ public class OwnerRepositoryTests
             }
             return databaseContext;
         }
+    [Fact]
+    public void GetCarByOwner_GivenCorrectId_ReturnCarList()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.GetCarByOwner(id);
+        // Assert
+        Assert.IsType<List<Car>>(result);
+    }
+    [Fact]
+    public void GetOwner_GivenCorrectId_ReturnOwner()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.GetOwner(id);
+        // Assert
+        Assert.IsType<Owner>(result);
+        Assert.Equal("Review 1", result.Name);
+    }
+    [Fact]
+    public void GetOwnerOfACar_GivenCorrectId_ReturnOwner()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.GetOwnerOfACar(id);
+        // Assert
+        Assert.IsType<List<Owner>>(result);
+    }
 }
