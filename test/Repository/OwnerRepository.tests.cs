@@ -70,4 +70,54 @@ public class OwnerRepositoryTests
         // Assert
         Assert.IsType<List<Owner>>(result);
     }
+    [Fact]
+    public void GetOwners_WhenCalled_ReturnOwnerList()
+    {
+        // Arrange
+        // Act
+        var result = _repository.GetOwners();
+        // Assert
+        Assert.IsType<List<Owner>>(result);
+    }
+    [Fact]
+    public void OwnerExists_GivenCorrectId_ReturnTrue()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        var result = _repository.OwnerExists(id);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void CreateOwner_GivenCorrectId_ReturnTrue()
+    {
+        // Arrange
+        var create = new Mock<Owner>();
+        // Act
+        var result = _repository.CreateOwner(create.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void UpdateOwner_GivenCorrectId_ReturnTrue()
+    {
+        // Arrange
+        var create = new Mock<Owner>();
+        // Act
+        var result = _repository.UpdateOwner(create.Object);
+        // Assert
+        Assert.True(result);
+    }
+    [Fact]
+    public void DeleteOwner_GivenCorrectId_ReturnTrue()
+    {
+        // Arrange
+        var owner = new Mock<Owner>();
+        // Act
+        var create = _repository.CreateOwner(owner.Object);
+        var result = _repository.DeleteOwner(owner.Object);
+        // Assert
+        Assert.True(result);
+    }
 }

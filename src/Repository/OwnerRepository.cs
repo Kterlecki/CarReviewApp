@@ -50,7 +50,7 @@ namespace CarReviewApp.Repository
             return saved > 0 ? true : false;
         }
 
-        bool IOwnerRepository.UpdateOwner(Owner owner)
+        public bool UpdateOwner(Owner owner)
         {
             _context.Update(owner);
             return Save();
