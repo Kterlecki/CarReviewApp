@@ -58,7 +58,7 @@ namespace CarReviewApp.Repository
             return Save();
         }
 
-        bool IReviewRepository.DeleteReviews(List<Review> reviews)
+        public bool DeleteReviews(List<Review> reviews)
         {
             _context.RemoveRange(reviews);
             return Save();
