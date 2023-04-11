@@ -16,15 +16,17 @@ public class CarAppClient : ICarAppClient
     {
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(header));
     }
-
-    public async Task GetCars()
+    public void AddBaseAdress(Uri uri)
     {
-        _httpClient.BaseAddress = new Uri("https://localhost:7179/");
+        _httpClient.BaseAddress = uri;
+    }
+
+    public void ClearDefaultRequestHeaders()
+    {
         _httpClient.DefaultRequestHeaders.Accept.Clear();
-        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        string responseBody = await _httpClient.GetStringAsync("api/Car");
-
-        Console.WriteLine(responseBody);
+    }
+    public Task GetCars(string endPoint)
+    {
+        throw new NotImplementedException();
     }
 }
