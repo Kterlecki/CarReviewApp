@@ -1,4 +1,4 @@
-
+using System.Net.Http.Headers;
 
 using CarReviewApp.client.Client;
 using CarReviewApp.client.Interfaces;
@@ -15,6 +15,14 @@ public class CarService
     {
         _httpClient = httpClient;
     }
+ public async Task GetCars(string endPoint)
+    {
+        _httpClient.AddBaseAdress(_baseAdress);
+        _httpClient.ClearDefaultRequestHeaders();
+        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
 
+        string responseBody = await _httpClient.GetCars(endPoint);
 
+        Console.WriteLine(responseBody);
+    }
 }

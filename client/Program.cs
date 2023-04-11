@@ -1,8 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CarReviewApp.client.Client;
+using CarReviewApp.client.Interfaces;
+using CarReviewApp.client.Service;
 
+var endPoint = "api/Car";
+var httpClient = new HttpClient();
+var carAppClient = new CarAppClient(httpClient);
+var carService = new CarService(carAppClient);
 
-var _httpClient = new HttpClient();
-var carApp = new CarAppClient(_httpClient);
-
-await carApp.GetCars();
+await carService.GetCars(endPoint);

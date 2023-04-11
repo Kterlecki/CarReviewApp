@@ -25,8 +25,8 @@ public class CarAppClient : ICarAppClient
     {
         _httpClient.DefaultRequestHeaders.Accept.Clear();
     }
-    public Task GetCars(string endPoint)
+    public async Task<string> GetCars(string endPoint)
     {
-        throw new NotImplementedException();
+        return await _httpClient.GetStringAsync(endPoint);
     }
 }
