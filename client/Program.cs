@@ -1,2 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+using CarReviewApp.client.Client;
+
+
+var _httpClient = new HttpClient();
+var carApp = new CarAppClient(_httpClient);
+
+await carApp.GetCars();
