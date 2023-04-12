@@ -1,4 +1,5 @@
 
+using System.Net.Http;
 using System.Net.Http.Headers;
 using CarReviewApp.client.Interfaces;
 
@@ -32,5 +33,13 @@ public class CarAppClient : ICarAppClient
     public async Task<string> GetCar(string endPoint)
     {
         return await _httpClient.GetStringAsync(endPoint);
+    }
+    public async Task<string> GetCarRating(string endPoint)
+    {
+        return await _httpClient.GetStringAsync(endPoint);
+    }
+    public async Task<HttpResponseMessage> CreateCar(string endpoint, HttpContent content)
+    {
+        return await _httpClient.PostAsync(endpoint, content);
     }
 }
