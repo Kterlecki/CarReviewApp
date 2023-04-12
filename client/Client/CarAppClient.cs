@@ -29,4 +29,8 @@ public class CarAppClient : ICarAppClient
     {
         return await _httpClient.GetStringAsync(endPoint);
     }
+    public async Task<string> GetCar(string endPoint)
+    {
+        return await _httpClient.GetStringAsync(endPoint);
+    }
 }

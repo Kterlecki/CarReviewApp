@@ -7,4 +7,5 @@ public interface ICarAppClient
     public void AddBaseAdress(Uri uri);
     public void ClearDefaultRequestHeaders();
     public Task<string> GetCars(string endPoint);
+    public Task<string> GetCar(string endPoint);
 }

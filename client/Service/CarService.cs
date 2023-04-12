@@ -25,4 +25,14 @@ public class CarService
 
         Console.WriteLine(responseBody);
     }
+ public async Task GetCar(string endPoint)
+    {
+        _httpClient.AddBaseAdress(_baseAdress);
+        _httpClient.ClearDefaultRequestHeaders();
+        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
+
+        string responseBody = await _httpClient.GetCars(endPoint);
+
+        Console.WriteLine(responseBody);
+    }
 }
