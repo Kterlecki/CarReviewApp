@@ -1,4 +1,6 @@
 
+using CarReviewApp.Dto;
+
 namespace CarReviewApp.client.Interfaces;
 
 public interface ICarAppClient
@@ -7,4 +9,7 @@ public interface ICarAppClient
     public void AddBaseAdress(Uri uri);
     public void ClearDefaultRequestHeaders();
     public Task<string> GetCars(string endPoint);
+    public Task<string> GetCar(string endPoint);
+    public Task<string> GetCarRating(string endPoint);
+    public Task<HttpResponseMessage> CreateCar(string ownerId, HttpContent content);
 }
