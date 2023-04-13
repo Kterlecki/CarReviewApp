@@ -72,4 +72,14 @@ public class CarService
 
         Console.WriteLine(responseBody);
     }
+ public async Task DeleteCar(string endPoint)
+    {
+        _httpClient.AddBaseAdress(_baseAdress);
+        _httpClient.ClearDefaultRequestHeaders();
+        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
+
+        var responseBody = await _httpClient.DeleteCar(endPoint);
+
+        Console.WriteLine(responseBody);
+    }
 }
