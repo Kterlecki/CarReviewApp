@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System;
 using CarReviewApp.client.Client;
 using CarReviewApp.client.Interfaces;
 using CarReviewApp.client.Service;
@@ -19,9 +20,36 @@ var carAppClient = new CarAppClient(httpClient);
 var carService = new CarService(carAppClient);
 carService.ClientHttpHeadersSetUp();
 
-await carService.GetCars(endPoint);
+// await carService.GetCars(endPoint);
 // await carService.GetCar(getCarEndPoint);
 // await carService.GetCarRating(getCarRatingEndPoint);
 // await carService.CreateCar(createCarEndPoint, carDto );
 // await carService.UpdateCar(updateCarEndPoint, carDtoUpdate );
 // await carService.DeleteCar( updateCarEndPoint );
+var code = 0;
+
+System.Console.WriteLine("Welcome to the Client App of CarReview");
+System.Console.WriteLine("Please Select from one of the following options:");
+System.Console.WriteLine("1 - Get Car");
+System.Console.WriteLine("2 - Get Car");
+System.Console.WriteLine("3 - Get Car");
+System.Console.WriteLine("4 - Get Car");
+System.Console.WriteLine("10 - Exit");
+while (code != 10)
+{
+    System.Console.WriteLine("Enter your numbered option: ");
+    code = Convert.ToInt32(Console.ReadLine());
+
+    switch (code)
+    {
+        case 1:
+            System.Console.WriteLine("get car");
+            break;
+        case 10:
+            Console.WriteLine("Exit selected");
+            break;
+        default:
+            break;
+    }
+    
+}
