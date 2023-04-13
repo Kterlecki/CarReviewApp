@@ -11,5 +11,7 @@ public interface ICarAppClient
     public Task<string> GetCars(string endPoint);
     public Task<string> GetCar(string endPoint);
     public Task<string> GetCarRating(string endPoint);
-    public Task<HttpResponseMessage> CreateCar(string ownerId, HttpContent content);
+    public Task<HttpResponseMessage> CreateCar(string endPoint, HttpContent content);
+    public Task<HttpResponseMessage> UpdateCar(string endPoint, HttpContent content);
+    public Task<HttpResponseMessage> DeleteCar(string endPoint);
 }
