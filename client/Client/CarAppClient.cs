@@ -42,4 +42,9 @@ public class CarAppClient : ICarAppClient
     {
         return await _httpClient.PostAsync(endpoint, content);
     }
+
+    public async Task<HttpResponseMessage> UpdateCar(string endPoint, HttpContent content)
+    {
+        return await _httpClient.PutAsync(endPoint, content);
+    }
 }

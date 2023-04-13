@@ -60,17 +60,16 @@ public class CarService
 
         Console.WriteLine(responseBody);
     }
+ public async Task UpdateCar(string endPoint, CarDto carDto)
+    {
+        _httpClient.AddBaseAdress(_baseAdress);
+        _httpClient.ClearDefaultRequestHeaders();
+        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
+        var json = JsonConvert.SerializeObject(carDto);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-    // public Dictionary<string, string> CreateCarHttpContentCreator( int ownerId, int catId, CarDto carDto)
-    // {
-    //     var data = new Dictionary<string, string>
-    //     {
-    //         { "ownerId", ownerId.ToString() },
-    //         { "catId", catId.ToString() },
-    //         { "Id", carDto.Id.ToString() },
-    //         { "Make", carDto.Make },
-    //         { "Model", carDto.Model },
-    //         { "YearBuilt", carDto.YearBuilt.ToString()}
-    //     };
-    // }
+        var responseBody = await _httpClient.UpdateCar(endPoint, content);
+
+        Console.WriteLine(responseBody);
+    }
 }
