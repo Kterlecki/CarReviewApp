@@ -18,68 +18,46 @@ public class CarService
     {
         _httpClient = httpClient;
     }
- public async Task GetCars(string endPoint)
+
+    public void ClientHttpHeadersSetUp()
     {
         _httpClient.AddBaseAdress(_baseAdress);
         _httpClient.ClearDefaultRequestHeaders();
         _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
-
-        string responseBody = await _httpClient.GetCars(endPoint);
-
-        Console.WriteLine(responseBody);
     }
- public async Task GetCar(string endPoint)
-    {
-        _httpClient.AddBaseAdress(_baseAdress);
-        _httpClient.ClearDefaultRequestHeaders();
-        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
 
-        string responseBody = await _httpClient.GetCars(endPoint);
-
-        Console.WriteLine(responseBody);
-    }
- public async Task GetCarRating(string endPoint)
-    {
-        _httpClient.AddBaseAdress(_baseAdress);
-        _httpClient.ClearDefaultRequestHeaders();
-        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
-
-        string responseBody = await _httpClient.GetCars(endPoint);
-
-        Console.WriteLine(responseBody);
-    }
- public async Task CreateCar(string endPoint, CarDto carDto)
-    {
-        _httpClient.AddBaseAdress(_baseAdress);
-        _httpClient.ClearDefaultRequestHeaders();
-        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
-        var json = JsonConvert.SerializeObject(carDto);
-        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-        var responseBody = await _httpClient.CreateCar(endPoint, content);
-
-        Console.WriteLine(responseBody);
-    }
- public async Task UpdateCar(string endPoint, CarDto carDto)
-    {
-        _httpClient.AddBaseAdress(_baseAdress);
-        _httpClient.ClearDefaultRequestHeaders();
-        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
-        var json = JsonConvert.SerializeObject(carDto);
-        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-        var responseBody = await _httpClient.UpdateCar(endPoint, content);
-
-        Console.WriteLine(responseBody);
-    }
- public async Task DeleteCar(string endPoint)
-    {
-        _httpClient.AddBaseAdress(_baseAdress);
-        _httpClient.ClearDefaultRequestHeaders();
-        _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
-
-        var responseBody = await _httpClient.DeleteCar(endPoint);
-
-        Console.WriteLine(responseBody);
-    }
+    public async Task GetCars(string endPoint)
+        {
+            string responseBody = await _httpClient.GetCars(endPoint);
+            Console.WriteLine(responseBody);
+        }
+    public async Task GetCar(string endPoint)
+        {
+            string responseBody = await _httpClient.GetCars(endPoint);
+            Console.WriteLine(responseBody);
+        }
+    public async Task GetCarRating(string endPoint)
+        {
+            string responseBody = await _httpClient.GetCars(endPoint);
+            Console.WriteLine(responseBody);
+        }
+    public async Task CreateCar(string endPoint, CarDto carDto)
+        {
+            var json = JsonConvert.SerializeObject(carDto);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var responseBody = await _httpClient.CreateCar(endPoint, content);
+            Console.WriteLine(responseBody);
+        }
+    public async Task UpdateCar(string endPoint, CarDto carDto)
+        {
+            var json = JsonConvert.SerializeObject(carDto);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var responseBody = await _httpClient.UpdateCar(endPoint, content);
+            Console.WriteLine(responseBody);
+        }
+    public async Task DeleteCar(string endPoint)
+        {
+            var responseBody = await _httpClient.DeleteCar(endPoint);
+            Console.WriteLine(responseBody);
+        }
 }

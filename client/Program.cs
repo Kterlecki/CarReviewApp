@@ -17,10 +17,11 @@ var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", 
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
 var carService = new CarService(carAppClient);
+carService.ClientHttpHeadersSetUp();
 
-// await carService.GetCars(endPoint);
+await carService.GetCars(endPoint);
 // await carService.GetCar(getCarEndPoint);
 // await carService.GetCarRating(getCarRatingEndPoint);
 // await carService.CreateCar(createCarEndPoint, carDto );
 // await carService.UpdateCar(updateCarEndPoint, carDtoUpdate );
-await carService.DeleteCar( updateCarEndPoint );
+// await carService.DeleteCar( updateCarEndPoint );
