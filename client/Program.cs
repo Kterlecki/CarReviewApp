@@ -6,14 +6,14 @@ using CarReviewApp.client.Interfaces;
 using CarReviewApp.client.Service;
 using CarReviewApp.Dto;
 
-var endPoint = "api/Car";
-var getCarsEndPoint = "api/Car";
-var getCarEndPoint = "api/Car/1";
-var getCarRatingEndPoint = "api/Car/1/rating";
+// var endPoint = "api/Car";
+// var getCarsEndPoint = "api/Car";
+// var getCarEndPoint = "api/Car/1";
+// var getCarRatingEndPoint = "api/Car/1/rating";
 var createCarEndPoint = "api/Car?ownerId=1&catId=3";
 var updateCarEndPoint = "api/Car/3003?catId=3&ownerId=1";
 var deleteCarEndPoint = "api/Car/3003";
-var carDto = new CarDto{ Make = "Porshce", Model = "911", YearBuilt = 2010 };
+// var carDto = new CarDto{ Make = "Porshce", Model = "911", YearBuilt = 2010 };
 var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", YearBuilt = 2023 };
 
 var httpClient = new HttpClient();
@@ -31,8 +31,8 @@ var code = 0;
 
 System.Console.WriteLine("Welcome to the Client App of CarReview");
 System.Console.WriteLine("Please Select from one of the following options:");
-System.Console.WriteLine("1 - Get Cars");
-System.Console.WriteLine("2 - Get Car");
+System.Console.WriteLine("1 - Get All Cars");
+System.Console.WriteLine("2 - Get A Car");
 System.Console.WriteLine("3 - Get Car Rating");
 System.Console.WriteLine("4 - Create Car");
 System.Console.WriteLine("5 - Update Car");
@@ -41,33 +41,59 @@ System.Console.WriteLine("7 - Exit");
 System.Console.WriteLine();
 while (code != 7)
 {
-    System.Console.WriteLine("Enter option number: ");
+    System.Console.Write("Enter option number: ");
     code = Convert.ToInt32(Console.ReadLine());
+    var carId = "";
+    var formatEndPoint = "";
+    var apiEndPoint = "";
 
     switch (code)
     {
         case 1:
             Console.WriteLine("Car List:");
-            await carService.GetCars(endPoint);
+            apiEndPoint = EndPointBuilder("");
+            await carService.GetCars(apiEndPoint);
             break;
         case 2:
             Console.WriteLine();
             Console.WriteLine("Please enter the Car ID");
-            var carId = Console.ReadLine();
+            carId = Console.ReadLine();
             if (!ValueNullCheck(carId!))
             {
                 Console.WriteLine("No value entered");
                 break;
             }
-            var formatEndPoint = "/" + carId;
-            var apiEndPoint = EndPointBuilder(formatEndPoint);
+            formatEndPoint = "/" + carId;
+            apiEndPoint = EndPointBuilder(formatEndPoint);
             await carService.GetCar(apiEndPoint);
             break;
         case 3:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.WriteLine("Please enter the Car ID");
+            carId = Console.ReadLine();
+            if (!ValueNullCheck(carId!))
+            {
+                Console.WriteLine("No value entered");
+                break;
+            }
+            formatEndPoint = "/" + carId + "/rating";
+            apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.GetCarRating(apiEndPoint);
             break;
         case 4:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.Write("Please enter the Car Make: ");
+            var carMake = Console.ReadLine();
+            Console.Write("Please enter the Car Model: ");
+            var carModel = Console.ReadLine();
+            Console.Write("Please enter the Car Year Built: ");
+            var carYearBuilt = Convert.ToInt32(Console.ReadLine());
+            var carDto = new CarDto{ Make = carMake, Model = carModel, YearBuilt = carYearBuilt };
+
+            formatEndPoint = "?ownerId=1&catId=3";
+
+            apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.CreateCar(apiEndPoint, carDto);
             break;
         case 5:
             System.Console.WriteLine("get car");
