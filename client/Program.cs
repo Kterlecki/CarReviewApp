@@ -1,4 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Text;
+// See https://aka.ms/new-console-template for more information
 using System;
 using CarReviewApp.client.Client;
 using CarReviewApp.client.Interfaces;
@@ -37,19 +38,30 @@ System.Console.WriteLine("4 - Create Car");
 System.Console.WriteLine("5 - Update Car");
 System.Console.WriteLine("6 - Delete Car");
 System.Console.WriteLine("7 - Exit");
+System.Console.WriteLine();
 while (code != 7)
 {
-    System.Console.WriteLine("Enter your numbered option: ");
+    System.Console.WriteLine("Enter option number: ");
     code = Convert.ToInt32(Console.ReadLine());
 
     switch (code)
     {
         case 1:
-            Console.WriteLine("Car List:")
+            Console.WriteLine("Car List:");
             await carService.GetCars(endPoint);
             break;
         case 2:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.WriteLine("Please enter the Car ID");
+            var carId = Console.ReadLine();
+            if (!ValueNullCheck(carId!))
+            {
+                Console.WriteLine("No value entered");
+                break;
+            }
+            var formatEndPoint = "/" + carId;
+            var apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.GetCar(apiEndPoint);
             break;
         case 3:
             System.Console.WriteLine("get car");
@@ -67,6 +79,24 @@ while (code != 7)
             Console.WriteLine("Exit selected");
             break;
         default:
+            Console.WriteLine("Option entered not available, Please try again");
             break;
     }
+}
+
+string EndPointBuilder(string endPoint)
+{
+    var apiPath = "api/Car";
+    var stringBuilder = new StringBuilder();
+    stringBuilder.Append(apiPath).Append(endPoint);
+    return stringBuilder.ToString();
+}
+
+bool ValueNullCheck(string valuePassedIn)
+{
+    if (string.IsNullOrEmpty(valuePassedIn))
+    {
+        return false;
+    }
+    return true;
 }
