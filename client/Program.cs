@@ -1,8 +1,5 @@
 ﻿using System.Text;
-// See https://aka.ms/new-console-template for more information
-using System;
 using CarReviewApp.client.Client;
-using CarReviewApp.client.Interfaces;
 using CarReviewApp.client.Service;
 using CarReviewApp.Dto;
 
@@ -10,11 +7,11 @@ using CarReviewApp.Dto;
 // var getCarsEndPoint = "api/Car";
 // var getCarEndPoint = "api/Car/1";
 // var getCarRatingEndPoint = "api/Car/1/rating";
-var createCarEndPoint = "api/Car?ownerId=1&catId=3";
-var updateCarEndPoint = "api/Car/3003?catId=3&ownerId=1";
+// var createCarEndPoint = "api/Car?ownerId=1&catId=3";
+// var updateCarEndPoint = "api/Car/3003?catId=3&ownerId=1";
 var deleteCarEndPoint = "api/Car/3003";
 // var carDto = new CarDto{ Make = "Porshce", Model = "911", YearBuilt = 2010 };
-var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", YearBuilt = 2023 };
+// var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", YearBuilt = 2023 };
 
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
@@ -46,6 +43,7 @@ while (code != 7)
     var carId = "";
     var formatEndPoint = "";
     var apiEndPoint = "";
+    var id = 0;
 
     switch (code)
     {
@@ -96,10 +94,31 @@ while (code != 7)
             await carService.CreateCar(apiEndPoint, carDto);
             break;
         case 5:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.Write("Enter Id of car to update: ");
+            id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Please enter the Car Make to: ");
+            var carMakeUpdate = Console.ReadLine();
+            Console.Write("Please enter the Car Model: ");
+            var carModelUpdate = Console.ReadLine();
+            Console.Write("Please enter the Car Year Built: ");
+            var carYearBuiltUpdate = Convert.ToInt32(Console.ReadLine());
+            var carDtoUpdate = new CarDto {Id = id, Make = carMakeUpdate, Model = carModelUpdate, YearBuilt = carYearBuiltUpdate };
+
+            formatEndPoint = $"/{id}?catId=1&ownerId=1";
+
+            apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.UpdateCar(apiEndPoint, carDtoUpdate);
             break;
         case 6:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.Write("Enter Id of car to Delete: ");
+            id = Convert.ToInt32(Console.ReadLine());
+
+            formatEndPoint = $"/{id}";
+
+            apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.DeleteCar(apiEndPoint);
             break;
         case 7:
             Console.WriteLine("Exit selected");
