@@ -14,7 +14,7 @@ var createCarEndPoint = "api/Car?ownerId=1&catId=3";
 var updateCarEndPoint = "api/Car/3003?catId=3&ownerId=1";
 var deleteCarEndPoint = "api/Car/3003";
 // var carDto = new CarDto{ Make = "Porshce", Model = "911", YearBuilt = 2010 };
-var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", YearBuilt = 2023 };
+// var carDtoUpdate = new CarDto{ Id = 3003, Make = "Porsche", Model = "Panamera", YearBuilt = 2023 };
 
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
@@ -96,7 +96,21 @@ while (code != 7)
             await carService.CreateCar(apiEndPoint, carDto);
             break;
         case 5:
-            System.Console.WriteLine("get car");
+            Console.WriteLine();
+            Console.Write("Enter Id of car to update: ");
+            var id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Please enter the Car Make to: ");
+            var carMakeUpdate = Console.ReadLine();
+            Console.Write("Please enter the Car Model: ");
+            var carModelUpdate = Console.ReadLine();
+            Console.Write("Please enter the Car Year Built: ");
+            var carYearBuiltUpdate = Convert.ToInt32(Console.ReadLine());
+            var carDtoUpdate = new CarDto {Id = id, Make = carMakeUpdate, Model = carModelUpdate, YearBuilt = carYearBuiltUpdate };
+
+            formatEndPoint = $"/{id}?catId=1&ownerId=1";
+
+            apiEndPoint = EndPointBuilder(formatEndPoint);
+            await carService.UpdateCar(apiEndPoint, carDtoUpdate);
             break;
         case 6:
             System.Console.WriteLine("get car");
