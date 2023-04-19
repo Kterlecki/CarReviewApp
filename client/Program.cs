@@ -1,7 +1,29 @@
 ﻿using System.Text;
 using CarReviewApp.client.Client;
+using CarReviewApp.client.Models;
 using CarReviewApp.client.Service;
 using CarReviewApp.Dto;
+using Microsoft.Extensions.Configuration;
+
+IConfiguration config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+Settings settings = config.GetValue<Settings>("Value");
+foreach (var item in config.AsEnumerable())
+{
+    Console.WriteLine($"{item.Key}={item.Value}");
+}
+if (settings != null)
+{
+    Console.WriteLine(settings.Value);
+}
+else
+{
+    Console.WriteLine("Error: Value not found in configuration.");
+}
+
+
 
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
