@@ -5,25 +5,29 @@ using CarReviewApp.client.Service;
 using CarReviewApp.Dto;
 using Microsoft.Extensions.Configuration;
 
-IConfiguration config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .Build();
+// Passing in secrets from appSettings
+// IConfiguration config = new ConfigurationBuilder()
+//     .AddJsonFile("appsettings.json")
+//     .AddEnvironmentVariables()
+//     .Build();
 
-Settings settings = config.GetValue<Settings>("Value");
-foreach (var item in config.AsEnumerable())
-{
-    Console.WriteLine($"{item.Key}={item.Value}");
-}
-if (settings != null)
-{
-    Console.WriteLine(settings.Value);
-}
-else
-{
-    Console.WriteLine("Error: Value not found in configuration.");
-}
+// var testSettingsValue = config.GetSection("TestSettings")["Value"];
+// If set up with this format -  "TestSettings": {"Value": "Test"},
+// If you have  an object that will take the values in your appSettings
+// var testSettings = new Settings
+// {
+//     Value = config.GetSection("TestSettings")["Value"]
+// };
 
-
+// Test for settings getting passed in
+// if (testSettingsValue != null)
+// {
+//     Console.WriteLine(testSettingsValue);
+// }
+// else
+// {
+//     Console.WriteLine("Error: Value not found in configuration.");
+// }
 
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
