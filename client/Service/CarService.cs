@@ -12,6 +12,7 @@ public class CarService
 {
     private readonly ICarAppClient _httpClient;
     private const string _contentTypeAccepted = "application/json";
+    private readonly Uri _baseAdress = new("https://localhost:7179/");
 
     public CarService(ICarAppClient httpClient)
     {
@@ -20,6 +21,7 @@ public class CarService
 
     public void ClientHttpHeadersSetUp()
     {
+        _httpClient.AddBaseAdress(_baseAdress);
         _httpClient.ClearDefaultRequestHeaders();
         _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
     }
