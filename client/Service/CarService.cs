@@ -12,7 +12,6 @@ public class CarService
 {
     private readonly ICarAppClient _httpClient;
     private const string _contentTypeAccepted = "application/json";
-    private readonly Uri _baseAdress = new("https://localhost:7179/");
 
     public CarService(ICarAppClient httpClient)
     {
@@ -21,7 +20,6 @@ public class CarService
 
     public void ClientHttpHeadersSetUp()
     {
-        _httpClient.AddBaseAdress(_baseAdress);
         _httpClient.ClearDefaultRequestHeaders();
         _httpClient.AddMediaTypeWithQualityHeaderValue(_contentTypeAccepted);
     }
@@ -60,4 +58,21 @@ public class CarService
             var responseBody = await _httpClient.DeleteCar(endPoint);
             Console.WriteLine(responseBody);
         }
-}
+
+    public string EndPointBuilder(string endPoint)
+    {
+        var apiPath = "api/Car";
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append(apiPath).Append(endPoint);
+        return stringBuilder.ToString();
+    }
+
+    public bool ValueNullCheck(string valuePassedIn)
+    {
+        if (string.IsNullOrEmpty(valuePassedIn))
+        {
+            return false;
+        }
+        return true;
+    }
+    }
