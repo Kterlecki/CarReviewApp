@@ -1,9 +1,12 @@
 ﻿using System.Text;
 using CarReviewApp.client.Client;
+using CarReviewApp.client.Interfaces;
 using CarReviewApp.client.Models;
 using CarReviewApp.client.Service;
 using CarReviewApp.Dto;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 // Passing in secrets from appSettings
 // IConfiguration config = new ConfigurationBuilder()
@@ -28,7 +31,6 @@ using Microsoft.Extensions.Configuration;
 // {
 //     Console.WriteLine("Error: Value not found in configuration.");
 // }
-
 var httpClient = new HttpClient();
 var carAppClient = new CarAppClient(httpClient);
 var carService = new CarService(carAppClient);
@@ -59,33 +61,33 @@ while (code != 7)
     {
         case 1:
             Console.WriteLine("Car List:");
-            apiEndPoint = EndPointBuilder("");
+            apiEndPoint = carService.EndPointBuilder("");
             await carService.GetCars(apiEndPoint);
             break;
         case 2:
             Console.WriteLine();
             Console.WriteLine("Please enter the Car ID");
             carId = Console.ReadLine();
-            if (!ValueNullCheck(carId!))
+            if (!carService.ValueNullCheck(carId!))
             {
                 Console.WriteLine("No value entered");
                 break;
             }
             formatEndPoint = "/" + carId;
-            apiEndPoint = EndPointBuilder(formatEndPoint);
+            apiEndPoint = carService.EndPointBuilder(formatEndPoint);
             await carService.GetCar(apiEndPoint);
             break;
         case 3:
             Console.WriteLine();
             Console.WriteLine("Please enter the Car ID");
             carId = Console.ReadLine();
-            if (!ValueNullCheck(carId!))
+            if (!carService.ValueNullCheck(carId!))
             {
                 Console.WriteLine("No value entered");
                 break;
             }
             formatEndPoint = "/" + carId + "/rating";
-            apiEndPoint = EndPointBuilder(formatEndPoint);
+            apiEndPoint = carService.EndPointBuilder(formatEndPoint);
             await carService.GetCarRating(apiEndPoint);
             break;
         case 4:
@@ -100,7 +102,7 @@ while (code != 7)
 
             formatEndPoint = "?ownerId=1&catId=3";
 
-            apiEndPoint = EndPointBuilder(formatEndPoint);
+            apiEndPoint = carService.EndPointBuilder(formatEndPoint);
             await carService.CreateCar(apiEndPoint, carDto);
             break;
         case 5:
@@ -117,7 +119,7 @@ while (code != 7)
 
             formatEndPoint = $"/{id}?catId=1&ownerId=1";
 
-            apiEndPoint = EndPointBuilder(formatEndPoint);
+            apiEndPoint = carService.EndPointBuilder(formatEndPoint);
             await carService.UpdateCar(apiEndPoint, carDtoUpdate);
             break;
         case 6:
@@ -127,7 +129,7 @@ while (code != 7)
 
             formatEndPoint = $"/{id}";
 
-            apiEndPoint = EndPointBuilder(formatEndPoint);
+            apiEndPoint = carService.EndPointBuilder(formatEndPoint);
             await carService.DeleteCar(apiEndPoint);
             break;
         case 7:
@@ -137,21 +139,4 @@ while (code != 7)
             Console.WriteLine("Option entered not available, Please try again");
             break;
     }
-}
-
-string EndPointBuilder(string endPoint)
-{
-    var apiPath = "api/Car";
-    var stringBuilder = new StringBuilder();
-    stringBuilder.Append(apiPath).Append(endPoint);
-    return stringBuilder.ToString();
-}
-
-bool ValueNullCheck(string valuePassedIn)
-{
-    if (string.IsNullOrEmpty(valuePassedIn))
-    {
-        return false;
-    }
-    return true;
 }

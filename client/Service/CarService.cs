@@ -60,4 +60,21 @@ public class CarService
             var responseBody = await _httpClient.DeleteCar(endPoint);
             Console.WriteLine(responseBody);
         }
-}
+
+    public string EndPointBuilder(string endPoint)
+    {
+        var apiPath = "api/Car";
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append(apiPath).Append(endPoint);
+        return stringBuilder.ToString();
+    }
+
+    public bool ValueNullCheck(string valuePassedIn)
+    {
+        if (string.IsNullOrEmpty(valuePassedIn))
+        {
+            return false;
+        }
+        return true;
+    }
+    }
